@@ -10,6 +10,7 @@ void addContact(PhoneBook& phone_book) {
 	std::string phone_number;
 	std::string darkest_secret;
 
+	// Get new contact info
 	std::cout << "Enter first name: ";
 	std::getline(std::cin, first_name);
 	std::cout << "Enter last name: ";
@@ -21,6 +22,7 @@ void addContact(PhoneBook& phone_book) {
 	std::cout << "Enter darkest secret: ";
 	std::getline(std::cin, darkest_secret);
 
+	// Add contact to phone book if possible
 	if (!phone_book.addContact(first_name, last_name, nick_name, phone_number, darkest_secret)) {
 		std::cout << "Fields can't be empty and phone number must have 9 digits" << std::endl;
 	}
@@ -32,6 +34,7 @@ void searchContact(PhoneBook& phone_book) {
 	std::string index;
 	std::cout << "Enter index: ";
 	std::getline(std::cin, index);
+	// Check if index is valid
 	if (index.length() != 1 || index[0] < '0' || index[0] > '7') {
 		std::cout << "Invalid index" << std::endl;
 		return;
