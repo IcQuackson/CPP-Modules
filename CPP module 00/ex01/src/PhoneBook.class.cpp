@@ -6,9 +6,9 @@
 #include "../includes/Contact.class.hpp"
 
 PhoneBook::PhoneBook() {
-	for (int i = 0; i < 8; i++) {
+	/* for (int i = 0; i < 8; i++) {
 		this->contact_list[i] = Contact();
-	}
+	} */
 	this->current_index = 0;
 	this->size = 0;
 }
