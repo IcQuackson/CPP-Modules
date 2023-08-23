@@ -1,7 +1,6 @@
 #ifndef CONTACT_CLASS_HPP
 # define CONTACT_CLASS_HPP
 
-//# include "PhoneBook.class.hpp"
 # include <string>
 
 class Contact {
@@ -19,7 +18,6 @@ public:
                  std::string nick, std::string phone,
                  std::string secret);
 
-	// Getters
 	std::string getFirstName(void);
 	std::string getLastName(void);
 	std::string getNickName(void);

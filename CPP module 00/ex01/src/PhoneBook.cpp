@@ -2,13 +2,10 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
-#include "../includes/PhoneBook.class.hpp"
-#include "../includes/Contact.class.hpp"
+#include "../includes/PhoneBook.hpp"
+#include "../includes/Contact.hpp"
 
 PhoneBook::PhoneBook() {
-	/* for (int i = 0; i < 8; i++) {
-		this->contact_list[i] = Contact();
-	} */
 	this->current_index = 0;
 	this->size = 0;
 }
@@ -43,22 +40,21 @@ bool PhoneBook::addContact(std::string first, std::string last,
 
 void PhoneBook::displayAllContacts(void) {
 	// Header
-    std::cout << std::right << std::setw(10) << "Index"
-              << " | " << std::setw(10) << "First Name"
-              << " | " << std::setw(10) << "Last Name"
-              << " | " << std::setw(10) << "Nickname" << std::endl;
+    std::cout << std::setw(10) << "Index"
+              << "|" << std::setw(10) << "First Name"
+              << "|" << std::setw(10) << "Last Name"
+              << "|" << std::setw(10) << "Nickname" << std::endl;
 	// Display contact info truncated to 10 chars per column
     for (int i = 0; i < getSize(); ++i) {
-        std::cout << std::right << std::setw(10) << i
-                  << " | " << std::setw(10) << (contact_list[i].getFirstName().length() > 10 ? contact_list[i].getFirstName().substr(0, 9) + "." : contact_list[i].getFirstName())
-                  << " | " << std::setw(10) << (contact_list[i].getLastName().length() > 10 ? contact_list[i].getLastName().substr(0, 9) + "." : contact_list[i].getLastName())
-                  << " | " << std::setw(10) << (contact_list[i].getNickName().length() > 10 ? contact_list[i].getNickName().substr(0, 9) + "." : contact_list[i].getNickName())
+        std::cout << std::setw(10) << i
+                  << "|" << std::setw(10) << (contact_list[i].getFirstName().length() > 10 ? contact_list[i].getFirstName().substr(0, 9) + "." : contact_list[i].getFirstName())
+                  << "|" << std::setw(10) << (contact_list[i].getLastName().length() > 10 ? contact_list[i].getLastName().substr(0, 9) + "." : contact_list[i].getLastName())
+                  << "|" << std::setw(10) << (contact_list[i].getNickName().length() > 10 ? contact_list[i].getNickName().substr(0, 9) + "." : contact_list[i].getNickName())
                   << std::endl;
     }
 }
 
-void PhoneBook::displayContact(int index)
-{
+void PhoneBook::displayContact(int index) {
 	if (index < 0 || index > 7 || index >= this->size) {
 		return;
 	}
@@ -70,7 +66,6 @@ void PhoneBook::displayContact(int index)
 	std::cout << "Darkest Secret: " << this->contact_list[index].getDarkestSecret() << std::endl;
 }
 
-int PhoneBook::getSize(void)
-{
+int PhoneBook::getSize(void) {
 	return this->size;
 }

@@ -1,5 +1,5 @@
 
-#include "../includes/Contact.class.hpp"
+#include "../includes/Contact.hpp"
 
 Contact::Contact(void) {}
 

@@ -3,7 +3,9 @@
 #include <ctime>
 #include "Account.hpp"
 
-// test using: diff <(cut -d ' ' -f 2- log) <(cut -d ' ' -f 2- 19920104_091532.log)
+// test using:
+// ./program > log
+// diff <(cut -d ' ' -f 2- log) <(cut -d ' ' -f 2- 19920104_091532.log)
 
 int Account::_nbAccounts = 0;
 int Account::_totalAmount = 0;
@@ -33,7 +35,6 @@ Account::~Account( void ) {
 	std::cout << "closed" << std::endl;
 }
 
-// static
 int	Account::getNbAccounts( void ) {
 	return _nbAccounts;
 }
@@ -70,8 +71,6 @@ void	Account::displayAccountsInfos( void ) {
 	std::cout << "withdrawals:" << _totalNbWithdrawals << std::endl;
 }
 
-// non-static
-// [19920104_091532] index:0;p_amount:42;deposit:5;amount:47;nb_deposits:1
 void	Account::makeDeposit( int deposit ) {
 
 	if (deposit <= 0) {
@@ -113,7 +112,6 @@ bool	Account::makeWithdrawal( int withdrawal ) {
 	std::cout << "nb_withdrawals:" << _nbWithdrawals << std::endl;
 	return true;
 }
-
 
 void	Account::displayStatus( void ) const {
 	_displayTimestamp();

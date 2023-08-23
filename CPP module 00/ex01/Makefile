@@ -8,7 +8,7 @@ BUILD_DIR := build
 TARGET := program
 
 # Source files and object files
-SRC := src/main.cpp src/Contact.class.cpp src/PhoneBook.class.cpp
+SRC := src/main.cpp src/Contact.cpp src/PhoneBook.cpp
 OBJ := $(SRC:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
 
 all: $(TARGET)

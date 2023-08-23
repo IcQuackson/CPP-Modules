@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
-#include "../includes/Contact.class.hpp"
-#include "../includes/PhoneBook.class.hpp"
+#include "../includes/Contact.hpp"
+#include "../includes/PhoneBook.hpp"
 
 void addContact(PhoneBook& phone_book) {
 	std::string first_name;
