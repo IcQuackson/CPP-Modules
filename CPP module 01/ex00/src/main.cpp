@@ -2,7 +2,8 @@
 #include "../includes/Zombie.hpp"
 
 int main() {
-	Zombie zombie("joao");
-	delete zombie.newZombie("mario");
-	zombie.randomChump("toni");
+	randomChump("STACK");
+	Zombie *zombie = newZombie("HEAP");
+	zombie->announce();
+	delete zombie;
 }
