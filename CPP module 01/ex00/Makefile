@@ -42,4 +42,7 @@ run: all
 gdb: all
 	gdb $(TARGET)
 
+valgrind: all
+	valgrind --leak-check=full --show-leak-kinds=all ./$(TARGET)
+
 .PHONY: all clean fclean re rerun test run
