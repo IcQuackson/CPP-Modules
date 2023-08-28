@@ -8,13 +8,8 @@ BUILD_DIR := build
 TARGET := program
 
 # Source files and object files
-SRC := src/main.cpp
+SRC := src/main.cpp src/Harl.cpp
 OBJ := $(SRC:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
-
-INFILE = in.txt
-TARGET_STR = aa
-REPLACEMENT_STR = bb
-ARGS = in.txt aa bb
 
 all: $(TARGET)
 
@@ -42,12 +37,12 @@ test: all
 	./$(TARGET)
 
 run: all
-	./$(TARGET) $(ARGS)
+	./$(TARGET)
 
 gdb: all
-	gdb $(TARGET) $(ARGS)
+	gdb $(TARGET)
 
 valgrind: all
-	valgrind --leak-check=full --show-leak-kinds=all ./$(TARGET) $(ARGS)
+	valgrind --leak-check=full --show-leak-kinds=all ./$(TARGET)
 
 .PHONY: all clean fclean re rerun test run
