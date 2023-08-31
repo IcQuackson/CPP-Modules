@@ -1,5 +1,9 @@
 # 42 Project CPP Modules
 
+<p align="left">
+  <img src="https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white"/>
+</p>
+
 Welcome to the 42 Project CPP Modules repository! This repository contains a collection of C++ projects completed as part of the 42 curriculum. Each module focuses on a specific aspect of C++ programming and software development.
 
 ## Table of Contents
