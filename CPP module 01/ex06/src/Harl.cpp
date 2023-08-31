@@ -27,6 +27,10 @@ void Harl::error( void ) {
     "I want to speak to the manager now." << std::endl;
 }
 
+void Harl::unknownLogLevel( void ) {
+    std::cout << "[Probably complaining about insignificant problems]" << std::endl;
+}
+
 void Harl::complain( std::string level ) {
     std::string levels[] = {"debug", "info", "warning", "error"};
 
@@ -37,9 +41,7 @@ void Harl::complain( std::string level ) {
             break;
         }
     }
-    if (i == -1) {
-        return;
-    }
+
     switch (i)
     {
         case 0:
@@ -50,7 +52,9 @@ void Harl::complain( std::string level ) {
             warning();
         case 3:
             error();
+            break;
         default:
+            unknownLogLevel();
             break;
     }
 }

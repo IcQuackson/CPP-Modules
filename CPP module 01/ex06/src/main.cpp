@@ -6,5 +6,5 @@ int main() {
     harl.complain("info");
     harl.complain("warning");
     harl.complain("error");
-    harl.complain("errord");
+    harl.complain("I am not sure how tired I am today...");
 }

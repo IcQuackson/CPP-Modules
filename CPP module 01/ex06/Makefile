@@ -5,7 +5,7 @@ CXXFLAGS := -Wall -Wextra -Werror -std=c++98 -g
 # Directories and file names
 SRC_DIR := src
 BUILD_DIR := build
-TARGET := program
+TARGET := harlFilter
 
 # Source files and object files
 SRC := src/main.cpp src/Harl.cpp

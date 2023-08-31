@@ -1,16 +1,6 @@
 #include <iostream>
 #include <fstream>
 
-/**
- * The function replaces occurrences of a target string with a replacement string in a given file.
- * 
- * @param file_name The name of the file that you want to modify.
- * @param targetString The targetString parameter is the string that you want to replace in the file.
- * @param replacementString The `replacementString` parameter is a string that will be used to replace
- * the `targetString` in the file.
- * 
- * @return void
- */
 void replace(char *file_name, std::string targetString, std::string replacementString) {
 
     if (targetString.empty() && replacementString.empty()) {
