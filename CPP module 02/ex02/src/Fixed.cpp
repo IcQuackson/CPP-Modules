@@ -38,7 +38,7 @@ void Fixed::setRawBits(int const raw) {
 }
 
 float Fixed::toFloat(void) const {
-	return static_cast<float> (getRawBits()) / (1 << NUM_FRAC_BITS);
+	return static_cast<float> (this->getRawBits()) / (1 << NUM_FRAC_BITS);
 }
 
 int Fixed::toInt(void) const {
