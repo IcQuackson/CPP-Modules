@@ -10,12 +10,12 @@ Fixed::Fixed(void) {
 
 Fixed::Fixed(const int value) {
 	std::cout << "Int constructor called" << std::endl;
-	this->number = value << NUM_FRAC_BITS;
+	setRawBits(value << NUM_FRAC_BITS);
 }
 
 Fixed::Fixed(const float value) {
 	std::cout << "Float constructor called" << std::endl;
-	this->number = roundf(value * (1 << NUM_FRAC_BITS));
+	setRawBits(roundf(value * (1 << NUM_FRAC_BITS)));
 }
 
 Fixed::Fixed(const Fixed &fixed) {
@@ -30,23 +30,21 @@ Fixed::~Fixed() {
 Fixed& Fixed::operator=(const Fixed &fixed) {
 	std::cout << "Copy assignment operator called" << std::endl;
 	if (this != &fixed) {
-		this->number = fixed.number;
+		setRawBits(fixed.getRawBits());
 	}
 	return *this;
 }
 
 int	Fixed::getRawBits(void) const {
-	std::cout << "getRawBits member function called" << std::endl;
 	return this->number;
 }
 
 void Fixed::setRawBits(int const raw) {
-	std::cout << "setRawBits member function called" << std::endl;
 	this->number = raw;
 }
 
 float Fixed::toFloat(void) const {
-	return static_cast<float> (this->number) / (1 << NUM_FRAC_BITS);
+	return static_cast<float> (getRawBits()) / (1 << NUM_FRAC_BITS);
 }
 
 int Fixed::toInt(void) const {
