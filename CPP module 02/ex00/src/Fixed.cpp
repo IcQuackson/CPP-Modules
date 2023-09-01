@@ -1,7 +1,7 @@
 
 #include "../includes/Fixed.hpp"
 
-const int Fixed::NUM_FRAC_BITS = 8;
+const int Fixed::_numFracBits = 8;
 
 Fixed::Fixed(void) {
 	std::cout << "Default constructor called" << std::endl;

@@ -1,7 +1,7 @@
 
 #include "../includes/Fixed.hpp"
 
-const int Fixed::NUM_FRAC_BITS = 8;
+const int Fixed::_numFracBits = 8;
 
 Fixed::Fixed(void) {
 	std::cout << "Default constructor called" << std::endl;
@@ -10,12 +10,12 @@ Fixed::Fixed(void) {
 
 Fixed::Fixed(const int value) {
 	std::cout << "Int constructor called" << std::endl;
-	setRawBits(value << NUM_FRAC_BITS);
+	setRawBits(value << _numFracBits);
 }
 
 Fixed::Fixed(const float value) {
 	std::cout << "Float constructor called" << std::endl;
-	setRawBits(roundf(value * (1 << NUM_FRAC_BITS)));
+	setRawBits(roundf(value * (1 << _numFracBits)));
 }
 
 Fixed::Fixed(const Fixed &fixed) {
@@ -44,11 +44,11 @@ void Fixed::setRawBits(int const raw) {
 }
 
 float Fixed::toFloat(void) const {
-	return static_cast<float> (this->getRawBits()) / (1 << NUM_FRAC_BITS);
+	return static_cast<float> (this->getRawBits()) / (1 << _numFracBits);
 }
 
 int Fixed::toInt(void) const {
-	return this->number >> NUM_FRAC_BITS;
+	return this->number >> _numFracBits;
 }
 
 std::ostream& operator<<(std::ostream& out, const Fixed& fixed)

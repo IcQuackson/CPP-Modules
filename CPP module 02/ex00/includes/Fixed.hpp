@@ -7,7 +7,7 @@ class Fixed {
 
 private:
 	int number;
-	static const int NUM_FRAC_BITS;
+	static const int _numFracBits;
 
 public:
 	Fixed();
