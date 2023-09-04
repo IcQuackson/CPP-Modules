@@ -58,6 +58,14 @@ void ClapTrap::setEnergyPoints(int energyPoints) {
 	this->energyPoints = energyPoints;
 }
 
+void ClapTrap::setAttackDamage(int attackDamage) {
+	this->attackDamage = attackDamage;
+}
+
+void ClapTrap::setName(std::string name) {
+	this->name = name;
+}
+
 void ClapTrap::attack(const std::string& target) {
 	if (this->getHitPoints() <= 0 || this->getEnergyPoints() <= 0) {
 		std::cout << "ClapTrap " << this->getName() << " can't attack!" << std::endl;
@@ -66,6 +74,7 @@ void ClapTrap::attack(const std::string& target) {
 
 	std::cout << "ClapTrap " << this->getName() << " attacks " << target <<\
 	", causing " << this->getAttackDamage() << " points of damage!" << std::endl;
+	
 	this->setEnergyPoints(this->getEnergyPoints() - 1);
 }
 

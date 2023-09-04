@@ -26,6 +26,8 @@ public:
 
 	void setHitPoints(int hitPoints);
 	void setEnergyPoints(int energyPoints);
+	void setAttackDamage(int attackDamage);
+	void setName(std::string name);
 
 	virtual void attack(const std::string& target);
 	void takeDamage(unsigned int amount);
