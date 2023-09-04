@@ -1,8 +1,15 @@
 
 #include "../includes/FragTrap.hpp"
 
-FragTrap::FragTrap() {
+FragTrap::FragTrap() : ClapTrap() {
+	setHitPoints(100);
+    setEnergyPoints(100);
+	setAttackDamage(30);
 	std::cout << "FragTrap created" << std::endl;
+	std::cout << "Name: " << getName() << ", ";
+	std::cout << "Hit Points: " << getHitPoints() << ", ";
+	std::cout << "Energy Points: " << getEnergyPoints() << ", ";
+	std::cout << "Attack Damage: " << getAttackDamage() << std::endl;
 }
 
 FragTrap::FragTrap(std::string name) : ClapTrap(name) {
@@ -14,6 +21,15 @@ FragTrap::FragTrap(std::string name) : ClapTrap(name) {
 	std::cout << "Hit Points: " << getHitPoints() << ", ";
 	std::cout << "Energy Points: " << getEnergyPoints() << ", ";
 	std::cout << "Attack Damage: " << getAttackDamage() << std::endl;
+}
+
+FragTrap::FragTrap(const FragTrap &fragTrap) {
+	*this = fragTrap;
+}
+
+FragTrap& FragTrap::operator=(const FragTrap &fragTrap) {
+	ClapTrap::operator=(fragTrap);
+	return *this;
 }
 
 FragTrap::~FragTrap() {

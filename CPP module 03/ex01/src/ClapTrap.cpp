@@ -2,8 +2,12 @@
 
 #include <iostream>
 
-ClapTrap::ClapTrap() {
-	std::cout << "ClapTrap created" << std::endl;
+ClapTrap::ClapTrap() : name("Default"), hitPoints(10), energyPoints(10), attackDamage(0) {
+	std::cout << "ClapTrap created: ";
+	std::cout << "Name: " << this->name << ", ";
+	std::cout << "Hit Points: " << this->hitPoints << ", ";
+	std::cout << "Energy Points: " << this->energyPoints << ", ";
+	std::cout << "Attack Damage: " << this->attackDamage << std::endl;
 }
 
 ClapTrap::ClapTrap(std::string name) : name(name), hitPoints(10), energyPoints(10), attackDamage(0) {
@@ -25,6 +29,7 @@ ClapTrap& ClapTrap::operator= (const ClapTrap &clapTrap) {
 		this->energyPoints = clapTrap.energyPoints;
 		this->attackDamage = clapTrap.attackDamage;
 	}
+	std::cout << "Assignment called" << std::endl;
 	return *this;
 }
 

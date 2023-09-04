@@ -12,7 +12,6 @@ int main() {
 	scavTrap.beRepaired(10);
 	std::cout << "Energy Points: " << scavTrap.getEnergyPoints() << std::endl;
 	scavTrap.guardGate();
-	
 
 	return 0;
 }

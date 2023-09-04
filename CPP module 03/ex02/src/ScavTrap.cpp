@@ -1,8 +1,16 @@
 
 #include "../includes/ScavTrap.hpp"
 
-ScavTrap::ScavTrap() {
+
+ScavTrap::ScavTrap() : ClapTrap() {
+	setHitPoints(100);
+    setEnergyPoints(50);
+	setAttackDamage(20);
 	std::cout << "ScavTrap created" << std::endl;
+	std::cout << "Name: " << getName() << ", ";
+	std::cout << "Hit Points: " << getHitPoints() << ", ";
+	std::cout << "Energy Points: " << getEnergyPoints() << ", ";
+	std::cout << "Attack Damage: " << getAttackDamage() << std::endl;
 }
 
 ScavTrap::ScavTrap(std::string name) : ClapTrap(name) {
@@ -14,6 +22,15 @@ ScavTrap::ScavTrap(std::string name) : ClapTrap(name) {
 	std::cout << "Hit Points: " << getHitPoints() << ", ";
 	std::cout << "Energy Points: " << getEnergyPoints() << ", ";
 	std::cout << "Attack Damage: " << getAttackDamage() << std::endl;
+}
+
+ScavTrap::ScavTrap(const ScavTrap &scavTrap) {
+	*this = scavTrap;
+}
+
+ScavTrap& ScavTrap::operator= (const ScavTrap &scavTrap) {
+	ClapTrap::operator=(scavTrap);
+	return *this;
 }
 
 ScavTrap::~ScavTrap() {
