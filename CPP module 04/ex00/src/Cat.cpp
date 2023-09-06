@@ -7,7 +7,7 @@ Cat::Cat() {
 
 Cat::Cat(const Cat &cat) {
     std::cout << "Cat copy constructor called" << std::endl;
-    
+    this->type = "Cat";
 }
 
 Cat& Cat::operator= (const Cat &cat) {
@@ -23,5 +23,5 @@ Cat::~Cat() {
 }
 
 void Cat::makeSound() const {
-    std::cout << "Default Cat sound" << std::endl;
+    std::cout << "MEOWWWWWWW" << std::endl;
 }
