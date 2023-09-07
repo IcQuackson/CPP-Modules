@@ -3,6 +3,15 @@
 
 int main()
 {
+	Dog basic;
+	{
+		Dog tmp = basic;
+		std::cout << "Brain address: " << tmp.getBrain() << std::endl;
+	}
+	std::cout << "Brain address: " << basic.getBrain() << std::endl;
+
+	std::cout << std::endl;
+
 	const Animal* j = new Dog();
 	const Animal* i = new Cat();
 	std::cout << std::endl;
@@ -31,7 +40,9 @@ int main()
 
 	// A copy of a Dog or a Cat mustn’t be shallow.
 	Dog *originalDog = new Dog();
+	std::cout << std::endl;
     Dog copiedDog = *originalDog;
+	std::cout << std::endl;
     Dog copiedDog2 = Dog(*originalDog);
 
 	std::cout << std::endl;

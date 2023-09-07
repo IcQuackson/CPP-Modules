@@ -2,7 +2,7 @@
 #pragma once
 
 #include <iostream>
-#include "AMateria.hpp"
+#include "ICharacter.hpp"
 
 class Character : public ICharacter {
 	
