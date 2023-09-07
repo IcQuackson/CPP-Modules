@@ -8,7 +8,7 @@ BUILD_DIR := build
 TARGET := program
 
 # Source files and object files
-SRC := src/main.cpp src/ClapTrap.cpp
+SRC := src/main.cpp src/Animal.cpp src/Dog.cpp src/Cat.cpp src/WrongAnimal.cpp src/WrongCat.cpp
 OBJ := $(SRC:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
 
 all: $(TARGET)

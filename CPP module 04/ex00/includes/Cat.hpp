@@ -4,7 +4,7 @@
 #include <iostream>
 #include "Animal.hpp"
 
-class Cat : protected Animal {
+class Cat : public Animal {
 
 public:
     Cat();
