@@ -11,12 +11,41 @@ int main() {
     b2.incrementGrade();
     std::cout << b2 << std::endl;
 
-    //Bureaucrat b3 = Bureaucrat("b3", 0); // throws GradeTooHighException
-    //Bureaucrat b4 = Bureaucrat("b4", 151); // throws GradeTooLowException
+    std::cout << std::endl;
 
+    try {
+        Bureaucrat b3 = Bureaucrat("b3", 0); // throws GradeTooHighException
+    }
+    catch(const std::exception& e) {
+        std::cerr << e.what() << '\n';
+    }
+
+    std::cout << std::endl;
+
+    try {
+        Bureaucrat b4 = Bureaucrat("b4", 151); // throws GradeTooLowException
+    }
+    catch(const std::exception& e) {
+        std::cerr << e.what() << '\n';
+    }
+    std::cout << std::endl;
+    
     b2.decrementGrade();
-    //b2.decrementGrade(); // throws GradeTooLowException
 
-    Bureaucrat mafiaBoss = Bureaucrat("Mafia Boss", 1);
-    //mafiaBoss.incrementGrade(); // throws GradeTooHighException
+    try {
+        b2.decrementGrade(); // throws GradeTooLowException
+    }
+    catch(const std::exception& e) {
+        std::cerr << e.what() << '\n';
+    }
+
+    std::cout << std::endl;
+
+    try {
+        Bureaucrat mafiaBoss = Bureaucrat("Mafia Boss", 1);
+        mafiaBoss.incrementGrade(); // throws GradeTooHighException
+    }
+    catch(const std::exception& e) {
+        std::cerr << e.what() << '\n';
+    }
 }
