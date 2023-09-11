@@ -2,50 +2,39 @@
 
 int main() {
     Bureaucrat b1 = Bureaucrat();
-    Bureaucrat b2 = Bureaucrat("Antonio Costa", 149);
+    Bureaucrat b2 = Bureaucrat("Antonio Costa", 150);
 
-    std::cout << b1 << std::endl;
-    std::cout << b2 << std::endl;
-    b2.decrementGrade();
-    std::cout << b2 << std::endl;
-    b2.incrementGrade();
-    std::cout << b2 << std::endl;
+	std::cout << std::endl;
 
-    std::cout << std::endl;
+	try {
+		Form test = Form("atestado de residencia", false, 0, 40);
+	}
+	catch (std::exception &e) {
+		std::cout << e.what() << std::endl;
+	}
 
-    try {
-        Bureaucrat b3 = Bureaucrat("b3", 0); // throws GradeTooHighException
-    }
-    catch(const std::exception& e) {
-        std::cerr << e.what() << '\n';
-    }
+	try {
+		Form test = Form("atestado de residencia", false, 1, 151);
+	}
+	catch (std::exception &e) {
+		std::cout << e.what() << std::endl;
+	}
 
-    std::cout << std::endl;
+	std::cout << std::endl;
 
-    try {
-        Bureaucrat b4 = Bureaucrat("b4", 151); // throws GradeTooLowException
-    }
-    catch(const std::exception& e) {
-        std::cerr << e.what() << '\n';
-    }
-    std::cout << std::endl;
-    
-    b2.decrementGrade();
+	Form f1 = Form("atestado de residencia", false, 149, 40);
+	
+	std::cout << std::endl;
 
-    try {
-        b2.decrementGrade(); // throws GradeTooLowException
-    }
-    catch(const std::exception& e) {
-        std::cerr << e.what() << '\n';
-    }
+	b2.signForm(f1);
 
-    std::cout << std::endl;
+	std::cout << std::endl;
 
-    try {
-        Bureaucrat mafiaBoss = Bureaucrat("Mafia Boss", 1);
-        mafiaBoss.incrementGrade(); // throws GradeTooHighException
-    }
-    catch(const std::exception& e) {
-        std::cerr << e.what() << '\n';
-    }
+	b2.incrementGrade();
+	b2.signForm(f1);
+	std::cout << std::endl;
+
+	b2.decrementGrade();
+	b2.signForm(f1);
+	std::cout << std::endl;
 }

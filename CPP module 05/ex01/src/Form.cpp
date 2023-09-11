@@ -16,35 +16,73 @@ public:
     }
 };
 
-
-
 Form::Form() : name("Default"), isSigned(false), gradeToSign(150), gradeToExecute(150) {
-    std::cout << "Form created: " << this << std::endl;
+    std::cout << "Form created: " << *this << std::endl;
 }
 
 Form::Form(std::string name, bool isSigned, int gradeToSign, int gradeToExecute) : name(name),\
                                                                                    isSigned(isSigned),\
                                                                                    gradeToSign(gradeToSign),\
                                                                                    gradeToExecute(gradeToExecute) {
-        std::cout << "Form created: " << this << std::endl;
+    if (gradeToSign < 1 || gradeToExecute < 1) {
+		throw GradeTooHighException();
+	}
+	else if (gradeToSign > 150 || gradeToExecute > 150) {
+		throw GradeTooLowException();
+	}
+	std::cout << "Form created: " << *this << std::endl;
 }
 
 Form::~Form() {
-    std::cout << "Form destroyed: " << this << std::endl;
+    std::cout << "Form destroyed: " << *this << std::endl;
 }
 
-/* const std::string getName() const {
-
+Form::Form(const Form &form) : name(form.name), isSigned(form.isSigned),\
+							   gradeToSign(form.gradeToSign), gradeToExecute(form.gradeToExecute) {
+	std::cout << "Form created: " << *this << std::endl;
 }
 
-bool getIsSigned() const;
-int getGradeToSign() const;
-int getGradeToExecute() const; */
+Form &Form::operator= (const Form &form) {
+	if (this != &form) {
+		this->isSigned = form.isSigned;
+	}
+	return *this;
+}
+
+const std::string Form::getName() const {
+	return this->name;
+}
+
+bool Form::getIsSigned() const { 
+	return this->isSigned;
+}
+
+int Form::getGradeToSign() const {
+	return this->gradeToSign;
+}
+
+int Form::getGradeToExecute() const {
+	return this->gradeToExecute;
+}
+
+void Form::beSigned(Bureaucrat &bureaucrat) {
+	try {
+		if (bureaucrat.getGrade() > this->getGradeToSign()) {
+			throw GradeTooLowException();
+		}
+		this->isSigned = true;
+		std::cout << bureaucrat.getName() << " signed form." << std::endl;
+	}
+	catch (GradeTooLowException &e) {
+		std::cout << bureaucrat.getName() << " couldn't sign " << this->getName()\
+		<< " because bureaucrat's grade is too low!" << std::endl;;
+	}
+}
 
 std::ostream& operator<<(std::ostream& out, const Form& form) {
-    out << getName() << " isSigned: " << getIsSigned() <<\
-    "gradeToSign: " << getGradeToSign() <<\
-    "gradeToExecute: " << getGradeToExecute();
+    out << form.getName() << "; isSigned: " << form.getIsSigned() <<\
+    "; gradeToSign: " << form.getGradeToSign() <<\
+    "; gradeToExecute: " << form.getGradeToExecute();
 
     return out;
 }

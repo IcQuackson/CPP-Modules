@@ -17,7 +17,7 @@ public:
 };
 
 Bureaucrat::Bureaucrat() : name("Default"), grade(150) {
-    std::cout << "Bureacrat created: " << getName() << " " << getGrade() << std::endl;
+    std::cout << "Bureaucrat created: " << getName() << " " << getGrade() << std::endl;
 }
 
 Bureaucrat::Bureaucrat(std::string name, int grade) : name(name) {
@@ -28,15 +28,15 @@ Bureaucrat::Bureaucrat(std::string name, int grade) : name(name) {
         throw GradeTooLowException();
     }
     this->grade = grade;
-    std::cout << "Bureacrat created: " << getName() << " " << getGrade() << std::endl;
+    std::cout << "Bureaucrat created: " << getName() << " " << getGrade() << std::endl;
 }
 
 Bureaucrat::~Bureaucrat() {
-    std::cout << "Bureacrat destroyed: " << getName() << " " << getGrade() << std::endl;
+    std::cout << "Bureaucrat destroyed: " << getName() << " " << getGrade() << std::endl;
 }
 
-Bureaucrat::Bureaucrat(const Bureaucrat &bureaucrat) {
-    *this = bureaucrat;
+Bureaucrat::Bureaucrat(const Bureaucrat &bureaucrat) : name(bureaucrat.name) {
+	this->grade = bureaucrat.getGrade();
 }
 
 Bureaucrat &Bureaucrat::operator= (const Bureaucrat &bureaucrat) {

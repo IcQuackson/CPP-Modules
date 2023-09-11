@@ -2,6 +2,9 @@
 #pragma once
 
 #include <iostream>
+#include "Bureaucrat.hpp"
+
+class Bureaucrat;
 
 class Form {
 
@@ -25,6 +28,8 @@ public:
     bool getIsSigned() const;
     int getGradeToSign() const;
     int getGradeToExecute() const;
+	void beSigned(Bureaucrat &bureaucrat);
+
 };
 
 std::ostream& operator<<(std::ostream& out, const Form& form);
