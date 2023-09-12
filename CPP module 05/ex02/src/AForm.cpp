@@ -74,27 +74,20 @@ int AForm::getGradeToExecute() const {
 }
 
 void AForm::beSigned(Bureaucrat &bureaucrat) {
-	try {
-		if (bureaucrat.getGrade() > this->getGradeToSign()) {
-			throw GradeTooLowException();
-		}
-		this->isSigned = true;
-		std::cout << bureaucrat.getName() << " signed form." << std::endl;
+	if (bureaucrat.getGrade() > this->getGradeToSign()) {
+		throw GradeTooLowException();
 	}
-	catch (GradeTooLowException &e) {
-		std::cout << bureaucrat.getName() << " couldn't sign " << this->getName()\
-		<< " because bureaucrat's grade is too low!" << std::endl;;
-	}
+	this->isSigned = true;
 }
 
 void AForm::execute(Bureaucrat const &executor) const {
 	
-		if (executor.getGrade() > this->getGradeToExecute()) {
-			throw GradeTooLowException();
-		}
-		if (!this->getIsSigned()) {
-			throw FormNotSignedException();
-		}
+	if (executor.getGrade() > this->getGradeToExecute()) {
+		throw GradeTooLowException();
+	}
+	if (!this->getIsSigned()) {
+		throw FormNotSignedException();
+	}
 }
 
 void AForm::printErrorMessage() const {

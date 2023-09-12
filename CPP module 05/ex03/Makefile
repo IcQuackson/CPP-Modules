@@ -31,6 +31,7 @@ $(BUILD_DIR):
 
 clean:
 	rm -rf $(BUILD_DIR)
+	rm *_shrubbery
 
 fclean: clean
 	rm -f $(TARGET)

@@ -17,7 +17,7 @@ int main() {
         Bureaucrat b3 = Bureaucrat("b3", 0); // throws GradeTooHighException
     }
     catch(const std::exception& e) {
-        std::cerr << e.what() << '\n';
+        std::cout << e.what() << std::endl;
     }
 
     std::cout << std::endl;
@@ -26,7 +26,7 @@ int main() {
         Bureaucrat b4 = Bureaucrat("b4", 151); // throws GradeTooLowException
     }
     catch(const std::exception& e) {
-        std::cerr << e.what() << '\n';
+        std::cout << e.what() << std::endl;
     }
     std::cout << std::endl;
     
@@ -36,7 +36,7 @@ int main() {
         b2.decrementGrade(); // throws GradeTooLowException
     }
     catch(const std::exception& e) {
-        std::cerr << e.what() << '\n';
+        std::cout << e.what() << std::endl;
     }
 
     std::cout << std::endl;
@@ -46,6 +46,6 @@ int main() {
         mafiaBoss.incrementGrade(); // throws GradeTooHighException
     }
     catch(const std::exception& e) {
-        std::cerr << e.what() << '\n';
+        std::cout << e.what() << '\n';
     }
 }

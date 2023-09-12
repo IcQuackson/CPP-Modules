@@ -34,6 +34,7 @@ void ShrubberyCreationForm::printErrorMessage() const {
 
 void ShrubberyCreationForm::action() const {
 	std::ofstream file;
+	std::string fileName = this->target + "_shrubbery";
 	std::string tree = 	"    ^    \n"
 						"   ^^^   \n"
 						"  ^^^^^  \n"
@@ -41,7 +42,11 @@ void ShrubberyCreationForm::action() const {
 						"^^^^^^^^^\n"
 						"   |||   \n";
 
-	file.open((this->target + "_shrubbery").c_str());
+	file.open(fileName.c_str());
+	if (!file.is_open()) {
+    	std::cout << "Failed to open file: " << fileName << std::endl;
+		return ;
+	}
 	for (int i = 0; i < 5; i++) {
 		file << tree << std::endl;
 		file << std::endl;
