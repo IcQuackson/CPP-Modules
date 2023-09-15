@@ -22,7 +22,7 @@ bool ScalarConverter::isChar(std::string literal) {
 void ScalarConverter::printCharConversion(std::string literal) {
 	char character = literal[0];
 	std::cout << "char: "; 
-	std::cout << static_cast<char>(character) << std::endl;
+	std::cout << "'" << static_cast<char>(character) << "'" << std::endl;
 	std::cout << "int: ";
 	std::cout << static_cast<int>(character) << std::endl;
 	std::cout << "float: ";
@@ -30,10 +30,6 @@ void ScalarConverter::printCharConversion(std::string literal) {
 	std::cout << "double: ";
 	std::cout << static_cast<double>(character) << ".0" << std::endl;
 }
-
-/* void ScalarConverter::printIntConversion(std::string literal) {
-
-} */
 
 bool ScalarConverter::isPseudo(std::string literal) {
 	std::string pseudoLiterals[] = {"-inf", "+inf", "-inff", "+inff", "nan", "nanf"};
@@ -50,19 +46,76 @@ bool ScalarConverter::isFloat(std::string literal) {
 	return literal[literal.length() - 1] == 'f';
 }
 
-std::string ScalarConverter::intToChar(int num) {
-	std::string charConversion;
-
-	charConversion = static_cast<char>(num);
-	if (num < 32 || num > 126) {
-		charConversion = "Non displayable";
-	}
-	else {
+std::string ScalarConverter::intToChar(int num, std::string charConversion) {
+	if (charConversion == "" && (num >= 32 && num <= 126)) {
 		charConversion = "'";
 		charConversion += static_cast<char>(num);
 		charConversion += "'";
 	}
+	else if (charConversion == "") {
+		charConversion = "Non displayable";
+	}
 	return charConversion;
+}
+
+bool ScalarConverter::isZero(std::string literal) {
+	int dotCount = 0;
+	size_t i;
+	
+	i = 0;
+	// check for sign
+	if (literal.length() > 1 && (literal[0] == '+' || literal[0] == '-')) {
+		i++;
+	}
+	// check for multiple dots
+	for (; i < literal.length(); i++) {
+	 	if (literal[i] == '.') {
+	 		dotCount++;
+		}
+	}
+	if (dotCount > 1) {
+		return false;
+	}
+	// check for any form of zero (0...., 0..0....., 0000...0000f)
+	i = (literal[0] == '+' || literal[0] == '-') ? 1 : 0;
+	for (; i < literal.length(); i++) {
+		if (literal[i] == '.') {
+			continue;
+		}
+		if (literal[i] != '0') {
+			break;
+		}
+	}
+	if (i == literal.length()) {
+		return true;
+	}
+	return i == (literal.length() - 1) && literal[i] == 'f';
+}
+
+int ScalarConverter::getNumDigits(double num) {
+	int numDigits = 0;
+
+	if ((num < INFINITY && num > -INFINITY && num != NAN)) {
+		if (num == 0 || floor(num) != num) {
+			return -1;
+		}
+		if (num < 0) {
+			num *= -1.0;
+		}
+		while (num >= 1) {
+			num = floor(num / 10.0);
+			numDigits++;
+		}
+
+		return numDigits;
+	}
+	else {
+		return -1;
+	}
+}
+
+bool ScalarConverter::isPseudoDouble(double num) {
+	return num == INFINITY || num == -INFINITY || num == NAN;
 }
 
 void ScalarConverter::convert(const std::string &literal) {
@@ -83,31 +136,47 @@ void ScalarConverter::convert(const std::string &literal) {
 		doubleConversion = static_cast<double>(floatConversion);
 	}
 	else {
-		doubleConversion = std::atof(literal.c_str());
+		doubleConversion = std::strtod(literal.c_str(), NULL);
 		floatConversion = static_cast<float>(doubleConversion);
 	}
+	
 	if (isPseudo(literal)) {
 		charConversion = "impossible";
 	}
-	else {
-		charConversion = intToChar(intConversion);
+	// check for impossible conversion
+	if (!isZero(literal) && intConversion == 0
+	&& charConversion == "" && doubleConversion == 0
+	&& floatConversion == 0) {
+		std::cout << "Impossible conversion!" << std::endl;
+		return;
 	}
-	std::cout << "char: ";
-	if (intConversion < 32 || intConversion > 126) {
-		std::cout << "Non displayable" << std::endl;
-	}
-	else {
-		std::cout << static_cast<char>(intConversion) << std::endl;
-	}
-	if (charConversion == "impossible") {
-		
-	}
-	std::cout <<"int: " << intConversion << std::endl;
-	std::cout << "float: " << floatConversion << ".0f" << std::endl;
-	std::cout << "double: " << doubleConversion << ".0" << std::endl;
 
-	/* 
+	charConversion = intToChar(intConversion, charConversion);
+	std::cout << "char: " << charConversion << std::endl;
+
+	if (charConversion == "impossible") {
+		std::cout <<"int: " << "impossible" << std::endl;  
+	}
 	else {
-		std::cout << "No conversion possible" << std::endl;
-	} */
+		std::cout << "int: " << intConversion << std::endl;
+	}
+
+	if (charConversion == "impossible" && floatConversion == 0) {
+		std::cout << "float: impossible" << std::endl;
+		std::cout << "double: impossible" << std::endl;
+		return ;
+	}
+
+	/* Checks if prints the float and double conversions
+	with or without decimal places. */
+	int numDigits = getNumDigits(doubleConversion);
+	if (!isPseudoDouble(doubleConversion) && charConversion != "impossible" && (floor(doubleConversion) == doubleConversion
+	&& (isZero(literal) || (numDigits != -1 && numDigits < 7)))) {
+		std::cout << "float: " << floatConversion << ".0f" << std::endl;
+		std::cout << "double: " << doubleConversion << ".0" << std::endl;
+	}
+	else {
+		std::cout << "float: " << floatConversion << "f" << std::endl;
+		std::cout << "double: " << doubleConversion << std::endl;
+	}
 }
