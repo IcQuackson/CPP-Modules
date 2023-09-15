@@ -1,6 +1,11 @@
 #include "../includes/iter.hpp"
 
 
+void printTwice(std::string &s) 
+{
+    std::cout << s << s << std::endl;
+}
+
 int main( void ) {
     
     int intArr[] = {1, 2, 3};
@@ -15,6 +20,8 @@ int main( void ) {
     ::iter(stringArr, len, testPrint<std::string>);
     std::cout << std::endl;
     ::iter(doubleArr, len, testPrint<double>);
+    std::cout << std::endl;
+    ::iter(stringArr, len, printTwice);
 
     return 0;
 }
