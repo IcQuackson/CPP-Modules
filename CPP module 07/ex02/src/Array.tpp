@@ -57,7 +57,7 @@ T &Array<T>::operator[] (unsigned int index) const {
         return this->array[index];
     }
     else {
-        throw std::out_of_range("Index out of bounds");
+        throw std::exception();
     }
 }
 
