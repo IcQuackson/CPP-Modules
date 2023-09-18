@@ -26,6 +26,13 @@ void Span::addNumber(int num) {
 	vector.push_back(num);
 }
 
+void Span::addNumber(std::vector<int>::iterator begin, std::vector<int>::iterator end) {
+	if (this->vector.size() + std::distance(begin, end) > maxSize) {
+		throw std::runtime_error("Storage is full!");
+	}
+	vector.insert(vector.end(), begin, end);
+}
+
 int Span::shortestSpan() const{
 	int currentSize;
 	int shortestSpan;

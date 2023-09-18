@@ -20,14 +20,24 @@ int main() {
 	}
 	{
 		// Empty storage
-		Span sp = Span(10000);
+		Span sp = Span(15000);
 
-		srand(time(NULL));
-		for (int i = 0; i < 10000; i++) {
-			sp.addNumber(rand());
+		std::vector<int> vector(15000);
+
+		for (int i = 0; i < 15000; i++) {
+			vector.at(i) = i;
 		}
+		// usage of range of iterators
+		sp.addNumber(vector.begin(), vector.end());
+
 		std::cout << sp.shortestSpan() << std::endl;
 		std::cout << sp.longestSpan() << std::endl;
+		try {
+			sp.addNumber(3);
+		}
+		catch (std::exception &e) {
+			std::cout << "range of iterators: " << e.what() << std::endl;
+		}
 	}
 	{
 		// Storage is full
