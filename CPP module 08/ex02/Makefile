@@ -8,8 +8,9 @@ BUILD_DIR := build
 TARGET := program
 
 # Source files and object files
-SRC := src/main.cpp src/Span.cpp
-OBJ := $(SRC:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
+SRC_CPP := $(SRC_DIR)/main.cpp
+SRC_TPP := $(SRC_DIR)/MutantStack.tpp
+OBJ := $(SRC_CPP:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o) $(SRC_TPP:$(SRC_DIR)/%.tpp=$(BUILD_DIR)/%.tpp.o)
 
 all: $(TARGET)
 
@@ -17,7 +18,10 @@ $(TARGET): $(OBJ)
 	$(CXX) $(CXXFLAGS) -o $@ $(OBJ)
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp | $(BUILD_DIR)
-	$(CXX) $(CXXFLAGS) -I includes -c $< -o $@
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/%.tpp.o: $(SRC_DIR)/%.tpp | $(BUILD_DIR)
+	$(CXX) $(CXXFLAGS) -x c++ -c $< -o $@
 
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)

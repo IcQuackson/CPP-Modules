@@ -1,4 +1,4 @@
-#include "../includes/Span.hpp"
+#include "Span.hpp"
 
 #include <iostream>
 #include <cstdlib>
