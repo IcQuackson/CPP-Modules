@@ -43,6 +43,8 @@ lldb: all
 	lldb $(TARGET) -- $(ARGS)
 
 test: all
+	./$(TARGET)
+	@echo "\n"
 	./$(TARGET) inputs/mix.txt
 	@echo "\n"
 	./$(TARGET) inputs/bad.txt
