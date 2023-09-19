@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <cstdlib>
 
 class BitcoinExchange {
 
@@ -21,7 +22,7 @@ private:
     bool isFormatValid(const std::string& line) const;
     bool isDateValid(const std::string& line) const;
     double getValue(const std::string& line) const;
-    double getRate(const std::string& line) const;
+    double getRate(std::string datePart) const;
 
 public:
     BitcoinExchange();

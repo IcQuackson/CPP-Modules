@@ -34,7 +34,6 @@ void BitcoinExchange::storeContent(const char *fileName, std::vector<std::string
     std::ifstream inFile(fileName);
 
     if (!inFile) {
-        std::cout << "File: " << fileName << " does not exist!" << std::endl;
         return;
     }
     while (std::getline(inFile, line)) {
@@ -46,11 +45,11 @@ void BitcoinExchange::storeContent(const char *fileName, std::vector<std::string
 bool BitcoinExchange::isInputValid() const {
 
     if (inputContent.empty()) {
-        std::cout << "Input file is empty!" << std::endl;
+        std::cout << "Error: Input file is empty or doesn't exist!" << std::endl;
         return false;
     }
     if (inputContent.at(0) != "date | value") {
-        std::cout << "Input file is not valid!" << std::endl;
+        std::cout << "Error: Input file is not valid!" << std::endl;
         return false;
     }
     return true;
@@ -59,9 +58,10 @@ bool BitcoinExchange::isInputValid() const {
 bool BitcoinExchange::isFormatValid(const std::string& line) const {
     std::string datePart;
     std::string valuePart;
+    float value = 0;
 
-    if (!(line.length() >= 14 && line[10] == ' ' && line[12] == ' ')) {
-        std::cout << "Invalid format!" << std::endl;
+    if (!(line.length() >= 14 && line[10] == ' ' && line[12] == ' ' && line[13] != ' ')) {
+        std::cout << "Error: Invalid format => " << line << std::endl;
         return false;
     }
 
@@ -69,28 +69,37 @@ bool BitcoinExchange::isFormatValid(const std::string& line) const {
     valuePart = line.substr(13);
 
     if (datePart.length() != 10 || datePart[4] != '-' || datePart[7] != '-') {
-        std::cout << "Invalid date format!" << std::endl;
+        std::cout << "Error: Invalid date format => " << datePart << std::endl;
         return false;
     }
 
-    std::istringstream valueStream(valuePart);
-    int intValue;
-    float floatValue;
-    double doubleValue;
+    std::istringstream strStream(valuePart);
 
-    if (!(valueStream >> intValue || valueStream >> floatValue || valueStream >> doubleValue)) {
-        std::cout << "Error: Not a valid numerical value!" << std::endl;
+    std::string valueStr;
+    if (!(strStream >> valueStr)) {
         return false;
     }
 
-    if (intValue < 0 || floatValue < 0 || doubleValue < 0
-     || intValue > 1000 || floatValue > 1000 || doubleValue > 1000) {
-        std::cout << "Error: value out of range!" << std::endl;
+    if (!strStream.eof()) {
+        std::cout << "Error: Invalid value format (no eof in the end)!" << std::endl;
         return false;
     }
 
-    if (!valueStream.eof()) {
-        std::cout << "Invalid value format!" << std::endl;
+    std::istringstream valueStream(valueStr);
+    if (!(valueStream >> value)) {
+        std::cout << "Error: Invalid numerical value!" << std::endl;
+        return false;
+    }
+
+    if (value < 0 || value > 1000) {
+        std::cout << "Error: Number out of range => " << value << std::endl;
+        return false;
+    }
+    std::string leftover;
+    valueStream >> leftover;
+
+    if (leftover != "f" && !leftover.empty()) {
+        std::cout << "Error: Invalid value format! => " << leftover << std::endl;
         return false;
     }
 
@@ -99,16 +108,26 @@ bool BitcoinExchange::isFormatValid(const std::string& line) const {
 
 bool BitcoinExchange::isDateValid(const std::string& line) const {
     std::string datePart = line.substr(0, 10);
+    std::string monthPart;
+    std::string dayPart;
     std::string::iterator it;
 
     for (it = datePart.begin(); it != datePart.end(); it++) {
         if (!isdigit(*it) && *it != '-') {
-            std::cout << "Invalid date format!" << std::endl;
+            std::cout << "Error: Invalid date format => " << datePart << std::endl;
             return false;
         }
     }
-    if (datePart.substr(5, 7) < "01" || datePart.substr(5, 7) > "12") {
-        std::cout << "Invalid date format!" << std::endl;
+    monthPart = datePart.substr(5, 2);
+    dayPart = datePart.substr(8, 2);
+
+    if (monthPart < "01" || monthPart > "12") {
+        std::cout << "Error: Invalid month format => " << monthPart << std::endl;
+        return false;
+    }
+
+    if (dayPart < "01" || dayPart > "31") {
+        std::cout << "Error: Invalid day format => " << dayPart << std::endl;
         return false;
     }
     return true;
@@ -118,14 +137,13 @@ bool BitcoinExchange::isLineValid(std::string line) const {
     std::string::iterator it;
 
     if (line.empty()) {
-        std::cout << "Line is empty!" << std::endl;
+        std::cout << "Error: Line is empty!" << std::endl;
         return false;
     }
     // check if line has format "YYYY-MM-DD | value"
     if (!isFormatValid(line)) {
         return false;
     }
-    // check if date is valid
     if (!isDateValid(line)) {
         return false;
     }
@@ -141,30 +159,33 @@ double BitcoinExchange::getValue(const std::string& line) const {
     return value;
 }
 
-double BitcoinExchange::getRate(const std::string& line) const {
-    std::string datePart = line.substr(0, 10);
-    std::string::iterator it;
+double BitcoinExchange::getRate(std::string datePart) const {
     std::string dbDate;
     std::string dbValue;
     std::string dbRate;
-    double rate;
+    std::vector<std::string>::const_iterator it;
+    double rate = 0.0;
 
     
     for (it = this->dbContent.begin(); it != this->dbContent.end(); it++) {
-        dbDate = *it.substr(0, 10);
-        dbValue = (*it).substr(11, (*it).length() - 11);
-        dbRate = (*it).substr(11, (*it).length() - 11);
+        std::string prev = *(it - 1);
+        std::string curr = *it;
+
+        dbDate = curr.substr(0, 10);
+        dbValue = curr.substr(11, curr.length() - 11);
+        dbRate = curr.substr(11, curr.length() - 11);
+
         if (dbDate == datePart) {
-            rate = std::stod(dbRate, NULL);
+            rate = std::strtod(dbRate.c_str(), NULL);
             break;
         }
         else if (dbDate > datePart && it != this->dbContent.begin()) {
-            dbRate = (*(it - 1)).substr(11, *(it - 1).length() - 11);
-            rate = std::stod(dbRate, NULL);
+            dbRate = prev.substr(11, prev.length() - 11);
+            rate = std::strtod(dbRate.c_str(), NULL);
             break;
         }
         else if (dbDate > datePart) {
-            rate = std::stod(dbRate, NULL);
+            rate = std::strtod(dbRate.c_str(), NULL);
             break;
         }
     }
@@ -173,17 +194,22 @@ double BitcoinExchange::getRate(const std::string& line) const {
 
 void BitcoinExchange::printRecords() const {
     std::vector<std::string>::const_iterator it;
+    std::string datePart;
 
     if (!isInputValid()) {
         return;
     }
+    if (inputContent.size() == 1) {
+        std::cout << "Error: No records found!" << std::endl;
+    }
 
     for (it = inputContent.begin() + 1; it != inputContent.end(); it++) {
         if (isLineValid(*it)) {
-            std::cout << (*it).substr(0, 10);
+            datePart = it->substr(0, 10); 
+            std::cout << datePart;
             std::cout << " => ";
             std::cout << (*it).substr(11, it->length() - 11);
-            std::cout << " = " << getValue(*it) * getRate(*it)  << std::endl;
+            std::cout << " = " << getValue(*it) * getRate(datePart) << std::endl;
         }
     }
 }
