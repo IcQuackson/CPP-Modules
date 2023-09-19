@@ -28,6 +28,11 @@ int main(int, char**)
         std::cout << "tmp: " << tmp[0] << std::endl;
     }
 
+    {
+        const Array<int> const_array(MAX_VAL);
+        //const_array[0] = 1;
+    }
+
     for (int i = 0; i < MAX_VAL; i++)
     {
         if (mirror[i] != numbers[i])

@@ -16,10 +16,6 @@ template <typename T>
 Array<T>::Array(unsigned int n) {
     this->len = n;
     this->array = new T[n];
-    for (unsigned int i = 0; i < this->len; i++) 
-	{
-        this->array[i] = 0;
-    }
 }
 
 template <typename T>
@@ -52,7 +48,17 @@ Array<T> &Array<T>::operator= (const Array &other) {
 }
 
 template <typename T>
-T &Array<T>::operator[] (unsigned int index) const {
+T &Array<T>::operator[] (unsigned int index) {
+    if (index < this->len) {
+        return this->array[index];
+    }
+    else {
+        throw std::exception();
+    }
+}
+
+template <typename T>
+const T &Array<T>::operator[] (unsigned int index) const {
     if (index < this->len) {
         return this->array[index];
     }

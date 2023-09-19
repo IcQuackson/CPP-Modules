@@ -4,7 +4,14 @@
 #include <iostream>
 
 template <typename T>
-void iter(T *arr, int len, void (*function)(T&)) {
+void iter(T *arr, int len, void (*function)(T &)) {
+    for (int i = 0; i < len; i++) {
+        function(arr[i]);
+    }
+}
+
+template <typename T>
+void iter(T const *arr, int len, void (*function)(const T &)) {
     for (int i = 0; i < len; i++) {
         function(arr[i]);
     }

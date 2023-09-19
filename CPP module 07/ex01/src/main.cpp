@@ -22,6 +22,8 @@ int main( void ) {
     ::iter(doubleArr, len, testPrint<double>);
     std::cout << std::endl;
     ::iter(stringArr, len, printTwice);
+    std::cout << std::endl;
+    ::iter(intArr, len, testPrint<const int>);
 
     return 0;
 }
