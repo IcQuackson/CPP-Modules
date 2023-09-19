@@ -1,4 +1,3 @@
-
 #include "BitcoinExchange.hpp"
 
 const char *BitcoinExchange::dbFileName = "data.csv";
@@ -51,6 +50,12 @@ bool BitcoinExchange::isInputValid() const {
     if (inputContent.at(0) != "date | value") {
         std::cout << "Error: Input file is not valid!" << std::endl;
         return false;
+    }
+    for (std::vector<std::string>::const_iterator it = inputContent.begin(); it != inputContent.end(); it++) {
+        if (it->empty()) {
+            std::cout << "Error: Line is empty!" << std::endl;
+            return false;
+        }
     }
     return true;
 }
@@ -165,8 +170,16 @@ double BitcoinExchange::getRate(std::string datePart) const {
     std::string dbRate;
     std::vector<std::string>::const_iterator it;
     double rate = 0.0;
-
     
+    dbDate = this->dbContent.back().substr(0, 10);
+
+    if (datePart > dbDate) {
+        std::cout << "Error: No rate found for date " << datePart << std::endl;
+        dbRate = this->dbContent.back().substr(11, this->dbContent.back().length() - 11);
+        rate = std::strtod(dbRate.c_str(), NULL);
+        return rate;
+    }
+
     for (it = this->dbContent.begin(); it != this->dbContent.end(); it++) {
         std::string prev = *(it - 1);
         std::string curr = *it;
@@ -175,16 +188,13 @@ double BitcoinExchange::getRate(std::string datePart) const {
         dbValue = curr.substr(11, curr.length() - 11);
         dbRate = curr.substr(11, curr.length() - 11);
 
+        if (dbDate > datePart) {
+            //std::cout << "Error: No rate found for date " << datePart << std::endl;
+            rate = std::strtod(dbRate.c_str(), NULL);
+            break;
+        }
+
         if (dbDate == datePart) {
-            rate = std::strtod(dbRate.c_str(), NULL);
-            break;
-        }
-        else if (dbDate > datePart && it != this->dbContent.begin()) {
-            dbRate = prev.substr(11, prev.length() - 11);
-            rate = std::strtod(dbRate.c_str(), NULL);
-            break;
-        }
-        else if (dbDate > datePart) {
             rate = std::strtod(dbRate.c_str(), NULL);
             break;
         }
