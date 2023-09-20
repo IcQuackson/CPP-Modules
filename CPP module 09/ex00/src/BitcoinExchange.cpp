@@ -174,7 +174,6 @@ double BitcoinExchange::getRate(std::string datePart) const {
     dbDate = this->dbContent.back().substr(0, 10);
 
     if (datePart > dbDate) {
-        std::cout << "Error: No rate found for date " << datePart << std::endl;
         dbRate = this->dbContent.back().substr(11, this->dbContent.back().length() - 11);
         rate = std::strtod(dbRate.c_str(), NULL);
         return rate;
