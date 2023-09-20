@@ -16,41 +16,25 @@ RPN &RPN::operator=(RPN const &other) {
     return *this;
 }
 
-void printStack(std::stack<char> s) {
-    while (!s.empty()) {
-        std::cout << s.top() << "-";
-        s.pop();
-    }
-    std::cout << std::endl;
-}
-
 void RPN::calculateRPN(std::string str) {
-    int result = 0;
 
     if (!isRPNValid(str)) {
         std::cout << "Error" << std::endl;
         return;
     }
 
-    std::stringstream ss(str);  
-    std::string tokenStr;
-    char token;
+    std::istream ss(str);  
+    int token;
 
-    while (ss >> tokenStr) {
-        token = tokenStr[0];
+    while (ss >> token) {
         std::cout << "token: " << token << std::endl;
 
-        //printStack(_stack);
-        if (std::isdigit(token)) {
-            std::cout << "is digit" << std::endl;
-            _stack.push(token);
-        }
-        else if (isOperator(token)) {
-            int a = _stack.top() - '0';
+        if (isOperator(token)) {
+            int a = _stack.top();
             _stack.pop();
-            int b = _stack.top() - '0';
+            int b = _stack.top();
             _stack.pop();
-            result = 0;
+            int result = 0;
             if (token == '+') {
                 result = a + b;
             } else if (token == '-') {
@@ -60,14 +44,18 @@ void RPN::calculateRPN(std::string str) {
             } else if (token == '/') {
                 result = a / b;
             }
-            _stack.push(result + '0');
+            _stack.push(std::to_string(result));
+        }
+        else {
+            _stack.push(token);
         }
     }
-    std::cout << result << std::endl;
+    printStack(_stack);
+    std::cout << _stack.top() << std::endl;
 }
 
-bool RPN::isOperator(char c) {
-    return (c == '+' || c == '-' || c == '*' || c == '/');
+bool RPN::isOperator(std::string str) {
+    return (str == "+" || str == "-" || str == "*" || str == "/");
 }
 
 bool RPN::isRPNValid(std::string str) {
@@ -76,7 +64,7 @@ bool RPN::isRPNValid(std::string str) {
 
     while (ss >> token) { // Extract token from the stream.
         if (token.length() > 1 || (!std::isdigit(token[0])
-                                    && !isOperator(token[0]))) {
+                                    && !isOperator(token))) {
             return false;
         }
         std::cout << token << " ";
