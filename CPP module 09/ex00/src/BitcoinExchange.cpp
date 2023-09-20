@@ -126,7 +126,7 @@ bool BitcoinExchange::isDateValid(const std::string& line) const {
     monthPart = datePart.substr(5, 2);
     dayPart = datePart.substr(8, 2);
 
-    if (monthPart < "01" || monthPart > "12") {
+    /* if (monthPart < "01" || monthPart > "12") {
         std::cout << "Error: Invalid month format => " << monthPart << std::endl;
         return false;
     }
@@ -134,7 +134,7 @@ bool BitcoinExchange::isDateValid(const std::string& line) const {
     if (dayPart < "01" || dayPart > "31") {
         std::cout << "Error: Invalid day format => " << dayPart << std::endl;
         return false;
-    }
+    } */
     return true;
 }
 
@@ -170,33 +170,25 @@ double BitcoinExchange::getRate(std::string datePart) const {
     std::string dbRate;
     std::vector<std::string>::const_iterator it;
     double rate = 0.0;
-    
-    dbDate = this->dbContent.back().substr(0, 10);
 
-    if (datePart > dbDate) {
-        dbRate = this->dbContent.back().substr(11, this->dbContent.back().length() - 11);
-        rate = std::strtod(dbRate.c_str(), NULL);
-        return rate;
-    }
+	dbRate = dbContent.begin()->substr(11, dbContent.begin()->length() - 11);
+	rate = std::strtod(dbRate.c_str(), NULL);
 
-    for (it = this->dbContent.begin(); it != this->dbContent.end(); it++) {
-        std::string prev = *(it - 1);
+    for (it = dbContent.begin(); it != dbContent.end(); ++it) {
         std::string curr = *it;
 
         dbDate = curr.substr(0, 10);
         dbValue = curr.substr(11, curr.length() - 11);
         dbRate = curr.substr(11, curr.length() - 11);
 
-        if (dbDate > datePart) {
-            //std::cout << "Error: No rate found for date " << datePart << std::endl;
-            rate = std::strtod(dbRate.c_str(), NULL);
-            break;
-        }
-
+		if (dbDate > datePart) {
+			break;
+		}
         if (dbDate == datePart) {
             rate = std::strtod(dbRate.c_str(), NULL);
             break;
         }
+		rate = std::strtod(dbRate.c_str(), NULL);
     }
     return rate;
 }
