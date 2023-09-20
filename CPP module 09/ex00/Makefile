@@ -10,7 +10,7 @@ TARGET := btc
 # Source files and object files
 SRC := src/main.cpp src/BitcoinExchange.cpp
 OBJ := $(SRC:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
-ARGS = inputs/mix.txt
+ARGS = inputs/good.txt
 
 all: $(TARGET)
 
@@ -45,7 +45,7 @@ lldb: all
 test: all
 	./$(TARGET)
 	@echo "\n"
-	./$(TARGET) inputs/mix.txt
+	./$(TARGET) inputs/good.txt
 	@echo "\n"
 	./$(TARGET) inputs/bad.txt
 	@echo "\n"
