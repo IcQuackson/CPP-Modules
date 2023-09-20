@@ -31,6 +31,14 @@ int main(int, char**)
     {
         const Array<int> const_array(MAX_VAL);
         //const_array[0] = 1;
+        Array<int> temp(0);
+        try {
+            temp[0] = 1;
+
+        }
+        catch(const std::exception& e) {
+            std::cerr << e.what() << ": index out of bounds" << '\n';
+        }
     }
 
     for (int i = 0; i < MAX_VAL; i++)
