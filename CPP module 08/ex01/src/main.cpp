@@ -15,8 +15,23 @@ int main() {
 		sp.addNumber(17);
 		sp.addNumber(9);
 		sp.addNumber(11);
-		std::cout << sp.shortestSpan() << std::endl;
-		std::cout << sp.longestSpan() << std::endl;
+		std::cout << "Shortest Span: " << sp.shortestSpan() << std::endl;
+		std::cout << "Longest Span: " << sp.longestSpan() << std::endl;
+	}
+	{
+		Span sp = Span(10);
+		sp.addNumber(6);
+		sp.addNumber(3);
+		sp.addNumber(17);
+		sp.addNumber(9);
+		sp.addNumber(11);
+		sp.addNumber(2);
+		sp.addNumber(25);
+		sp.addNumber(1);
+		sp.addNumber(19);
+		sp.addNumber(8);
+		std::cout << "Shortest Span: " << sp.shortestSpan() << std::endl;
+		std::cout << "Longest Span: " << sp.longestSpan() << std::endl;
 	}
 	{
 		// Empty storage
