@@ -19,6 +19,12 @@ Span &Span::operator=(Span const &other) {
 	return *this;
 }
 
+/**
+ * The addNumber function adds a number to the vector if it is not already full.
+ * 
+ * @param num The parameter "num" is an integer value that represents the number to be added to the
+ * vector.
+ */
 void Span::addNumber(int num) {
 	if (this->vector.size() == maxSize) {
 		throw std::runtime_error("Storage is full!");
@@ -26,6 +32,15 @@ void Span::addNumber(int num) {
 	vector.push_back(num);
 }
 
+/**
+ * The function adds a range of numbers to a vector, throwing an error if the vector exceeds its
+ * maximum size.
+ * 
+ * @param begin An iterator pointing to the beginning of the range of numbers to be added to the
+ * vector.
+ * @param end The "end" parameter is an iterator pointing to the position of the last element in
+ * the range of numbers that you want to add to the "vector" member variable of the "Span" class.
+ */
 void Span::addNumber(std::vector<int>::iterator begin, std::vector<int>::iterator end) {
 	if (this->vector.size() + std::distance(begin, end) > maxSize) {
 		throw std::runtime_error("Storage is full!");
@@ -33,6 +48,15 @@ void Span::addNumber(std::vector<int>::iterator begin, std::vector<int>::iterato
 	vector.insert(vector.end(), begin, end);
 }
 
+/**
+ * The function calculates the shortest span between two elements in a vector.
+ * First it sorts the vector, then it iterates through the vector and compares
+ * the difference between the current element and the next element.
+ * If the difference is smaller than the current shortest span, the difference becomes
+ * the new shortest span.
+ * 
+ * @return the shortest span between elements in the vector.
+ */
 int Span::shortestSpan() const{
 	int currentSize;
 	int shortestSpan;
@@ -57,6 +81,11 @@ int Span::shortestSpan() const{
 	return shortestSpan;
 }
 
+/**
+ * The function calculates the difference between the maximum and minimum elements in a vector.
+ * 
+ * @return the difference between the maximum and minimum elements in the vector.
+ */
 int Span::longestSpan() const {
 
 	if (this->vector.size() <= 1) {

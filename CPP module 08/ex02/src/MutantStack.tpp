@@ -17,25 +17,15 @@ MutantStack<T>::~MutantStack() {
 
 template <class T>
 MutantStack<T>::MutantStack(const MutantStack<T> &other) {
-    *this = other;
+	*this = other;
 }
 
 template <class T>
 MutantStack<T> &MutantStack<T>::operator=(const MutantStack<T> &other) {
-    if (this != &other) {
-        std::stack<T>::operator=(other);
-    }
-    return *this;
-}
-
-template <class T>
-void MutantStack<T>::push(const T& value) {
-    std::stack<T>::push(value);
-}
-
-template <class T>
-void MutantStack<T>::pop() {
-    std::stack<T>::pop();
+	if (this != &other) {
+		std::stack<T>::operator=(other);
+	}
+	return *this;
 }
 
 template <class T>

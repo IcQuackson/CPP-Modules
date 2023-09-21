@@ -6,6 +6,7 @@
 #include <stack>
 #include <algorithm>
 #include <iostream>
+#include <list>
 
 template <class T>
 class MutantStack : public std::stack<T, std::deque<T> > {
@@ -17,8 +18,6 @@ public:
     MutantStack &operator= (const MutantStack<T> &other);
 
     typedef typename std::deque<T>::iterator iterator;
-    void push(const T& value);
-    void pop();
     iterator begin();
     iterator end();
 };
