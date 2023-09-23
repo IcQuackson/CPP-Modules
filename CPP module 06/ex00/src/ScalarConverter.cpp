@@ -47,12 +47,13 @@ bool ScalarConverter::isFloat(std::string literal) {
 }
 
 std::string ScalarConverter::intToChar(int num, std::string charConversion) {
-	if (charConversion == "" && (num >= 32 && num <= 126)) {
+	char c = static_cast<char>(num);
+	if (c >= 32 && c <= 126) {
 		charConversion = "'";
-		charConversion += static_cast<char>(num);
+		charConversion += c;
 		charConversion += "'";
 	}
-	else if (charConversion == "") {
+	else {
 		charConversion = "Non displayable";
 	}
 	return charConversion;
