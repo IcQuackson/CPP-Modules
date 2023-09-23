@@ -12,6 +12,7 @@ RPN::~RPN() {
 
 RPN &RPN::operator=(RPN const &other) {
     if (this != &other) {
+        _stack = other._stack;
     }
     return *this;
 }
