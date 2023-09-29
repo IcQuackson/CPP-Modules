@@ -17,7 +17,7 @@ void printDequ(std::deque<int> deq) {
 
 int main(int argc, char **argv) {
     std::deque<int> dequeInt;
-    std::list<int> listInt;
+    std::vector<int> vector;
 
     if (argc <= 1) {
         std::cout << "argc: " << argc << std::endl;
@@ -49,15 +49,16 @@ int main(int argc, char **argv) {
     }
 
     for (int i = 0; i < argc - 1; i++) {
-        listInt.push_back(std::atoi(argv[i]));
+        vector.push_back(std::atoi(argv[i]));
     }
 
-    PmergeMe::listSort(listInt);
+    
+    PmergeMe::vectorSort(vector, 0, vector.size() - 1);
     endTime = clock();
     elapsedTime = static_cast<double>(endTime - startTime) / CLOCKS_PER_SEC * 1000.0;
-    std::cout << "LIST Execution time: " << elapsedTime << " milliseconds" << std::endl;
+    std::cout << "VECTOR Execution time: " << elapsedTime << " milliseconds" << std::endl;
     
-    if (!PmergeMe::isListSorted(listInt)) {
+    if (!PmergeMe::isVectorSorted(vector)) {
         std::cout << "Error: not sorted" << std::endl;
         return (0);
     }

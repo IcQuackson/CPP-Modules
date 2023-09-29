@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <deque>
-#include <list>
+#include <vector>
 #include <algorithm>
 #include <cstring>
 #include <ctime>
@@ -28,8 +28,8 @@ public:
     static void dequeMerge(std::deque<int>& deq, int p, int q, int r);
     static bool isDequeSorted(std::deque<int>& deq);
 
-	static void listInsertionSort(std::list<int>& lst);
-	static void listMerge(std::list<int>& lst, std::list<int>::iterator p, std::list<int>::iterator q, std::list<int>::iterator r);
-	static void listSort(std::list<int>& lst);
-	static bool isListSorted(const std::list<int>& lst);
+    static void vectorInsertionSort(std::vector<int>& vec, size_t p, size_t q);
+    static void vectorMerge(std::vector<int>& vec, size_t p, size_t q, size_t r);
+    static void vectorSort(std::vector<int>& vec, size_t p, size_t r);
+    static bool isVectorSorted(const std::vector<int>& vec);
 };

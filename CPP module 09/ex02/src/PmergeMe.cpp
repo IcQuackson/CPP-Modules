@@ -94,80 +94,59 @@ bool PmergeMe::isDequeSorted(std::deque<int>& deq) {
     return true;
 }
 
-void PmergeMe::listInsertionSort(std::list<int>& lst) {
-    for (std::list<int>::iterator i = lst.begin(); i != lst.end(); ++i) {
-        std::list<int>::iterator j = i;
-        ++j;
-        if (j == lst.end()) {
-            break;
+void PmergeMe::vectorInsertionSort(std::vector<int>& vec, size_t p, size_t q) {
+    for (size_t i = p; i < q; i++) {
+        int tempVal = vec[i + 1];
+        size_t j = i + 1;
+        while (j > p && vec[j - 1] > tempVal) {
+            vec[j] = vec[j - 1];
+            j--;
         }
-        int tempVal = *j;
-        while (j != lst.begin()) {
-            std::list<int>::iterator prevJ = j;
-            --prevJ;
-            if (*prevJ > tempVal) {
-                *j = *prevJ;
-                --j;
-            } else {
-                break;
-            }
-        }
-        *j = tempVal;
+        vec[j] = tempVal;
     }
 }
 
-void PmergeMe::listMerge(std::list<int>& lst, std::list<int>::iterator p, std::list<int>::iterator q, std::list<int>::iterator r) {
-    std::list<int> mergedList;
+void PmergeMe::vectorMerge(std::vector<int>& vec, size_t p, size_t q, size_t r) {
+    size_t n1 = q - p + 1;
+    size_t n2 = r - q;
+    std::vector<int> leftVector(vec.begin() + p, vec.begin() + q + 1);
+    std::vector<int> rightVector(vec.begin() + q + 1, vec.begin() + r + 1);
 
-    std::list<int>::iterator leftIter = p;
-    std::list<int>::iterator rightIter = q;
-
-    while (leftIter != q && rightIter != r) {
-        if (*rightIter < *leftIter) {
-            lst.insert(p, *rightIter);
-            ++rightIter;
+    size_t leftIndex = 0;
+    size_t rightIndex = 0;
+    for (size_t i = p; i <= r; i++) {
+        if (rightIndex == n2) {
+            vec[i] = leftVector[leftIndex];
+            leftIndex++;
+        } else if (leftIndex == n1) {
+            vec[i] = rightVector[rightIndex];
+            rightIndex++;
+        } else if (rightVector[rightIndex] > leftVector[leftIndex]) {
+            vec[i] = leftVector[leftIndex];
+            leftIndex++;
         } else {
-            lst.insert(p, *leftIter);
-            ++leftIter;
+            vec[i] = rightVector[rightIndex];
+            rightIndex++;
         }
-        ++p; // Move the iterator in the original list
-    }
-
-    // Copy the remaining elements from the left and right halves
-    lst.insert(p, leftIter, q);
-    lst.insert(p, rightIter, r);
-}
-
-
-void PmergeMe::listSort(std::list<int>& lst) {
-    if (lst.size() > K) {
-        std::list<int> secondHalf;
-        std::list<int>::iterator p = lst.begin();
-        std::advance(p, lst.size() / 2);
-
-        std::copy(p, lst.end(), std::back_inserter(secondHalf));
-        lst.erase(p, lst.end());
-
-        listSort(lst);
-        listSort(secondHalf);
-        listMerge(lst, lst.begin(), secondHalf.begin(), secondHalf.end());
-    }
-	else {
-        listInsertionSort(lst);
     }
 }
 
-bool PmergeMe::isListSorted(const std::list<int>& lst) {
-    std::list<int>::const_iterator it1 = lst.begin();
-    std::list<int>::const_iterator it2 = lst.begin();
-    ++it2;
+void PmergeMe::vectorSort(std::vector<int>& vec, size_t p, size_t r) {
+    if (r - p > K) {
+        size_t q = (p + r) / 2;
+        vectorSort(vec, p, q);
+        vectorSort(vec, q + 1, r);
+        vectorMerge(vec, p, q, r);
+    } else {
+        vectorInsertionSort(vec, p, r);
+    }
+}
 
-    while (it2 != lst.end()) {
-        if (*it1 > *it2) {
+bool PmergeMe::isVectorSorted(const std::vector<int>& vec) {
+    for (size_t i = 0; i < vec.size() - 1; i++) {
+        if (vec[i] > vec[i + 1]) {
             return false;
         }
-        ++it1;
-        ++it2;
     }
     return true;
 }
