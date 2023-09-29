@@ -27,8 +27,9 @@ public:
     static void dequeInsertionSort(std::deque<int>& deq, int p, int q);
     static void dequeMerge(std::deque<int>& deq, int p, int q, int r);
     static bool isDequeSorted(std::deque<int>& deq);
-    /*static void listInsertionSort(std::list<int>& lst);
-    static void listMerge(std::list<int>::iterator p, std::list<int>::iterator q, std::list<int>::iterator r);
-    static void listSort(std::list<int>& lst);
-    static bool isListSorted(const std::list<int>& lst); */
+
+	static void listInsertionSort(std::list<int>& lst);
+	static void listMerge(std::list<int>& lst, std::list<int>::iterator p, std::list<int>::iterator q, std::list<int>::iterator r);
+	static void listSort(std::list<int>& lst);
+	static bool isListSorted(const std::list<int>& lst);
 };

@@ -48,17 +48,17 @@ int main(int argc, char **argv) {
         return (0);
     }
 
-    /* for (int i = 0; i < argc - 1; i++) {
+    for (int i = 0; i < argc - 1; i++) {
         listInt.push_back(std::atoi(argv[i]));
     }
 
-    PmergeMe::listSort(listInt); */
-    /* endTime = clock();
+    PmergeMe::listSort(listInt);
+    endTime = clock();
     elapsedTime = static_cast<double>(endTime - startTime) / CLOCKS_PER_SEC * 1000.0;
     std::cout << "LIST Execution time: " << elapsedTime << " milliseconds" << std::endl;
     
     if (!PmergeMe::isListSorted(listInt)) {
         std::cout << "Error: not sorted" << std::endl;
         return (0);
-    } */
+    }
 }

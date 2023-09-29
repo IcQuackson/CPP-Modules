@@ -85,7 +85,16 @@ void PmergeMe::dequeSort(std::deque<int>& deq, int p, int r) {
 	}
 }
 
-/* void PmergeMe::listInsertionSort(std::list<int>& lst) {
+bool PmergeMe::isDequeSorted(std::deque<int>& deq) {
+	for (size_t i = 0; i < deq.size() - 1; i++) {
+        if (deq[i] > deq[i + 1]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+void PmergeMe::listInsertionSort(std::list<int>& lst) {
     for (std::list<int>::iterator i = lst.begin(); i != lst.end(); ++i) {
         std::list<int>::iterator j = i;
         ++j;
@@ -107,48 +116,43 @@ void PmergeMe::dequeSort(std::deque<int>& deq, int p, int r) {
     }
 }
 
-void PmergeMe::listMerge(std::list<int>::iterator p, std::list<int>::iterator q, std::list<int>::iterator r) {
-    std::list<int> leftList(p, q);
-    std::list<int> rightList(q, r);
+void PmergeMe::listMerge(std::list<int>& lst, std::list<int>::iterator p, std::list<int>::iterator q, std::list<int>::iterator r) {
+    std::list<int> mergedList;
 
-    std::list<int>::iterator leftIter = leftList.begin();
-    std::list<int>::iterator rightIter = rightList.begin();
-    std::list<int>::iterator mainIter = p;
+    std::list<int>::iterator leftIter = p;
+    std::list<int>::iterator rightIter = q;
 
-    while (leftIter != leftList.end() && rightIter != rightList.end()) {
+    while (leftIter != q && rightIter != r) {
         if (*rightIter < *leftIter) {
-            *mainIter = *rightIter;
+            lst.insert(p, *rightIter);
             ++rightIter;
         } else {
-            *mainIter = *leftIter;
+            lst.insert(p, *leftIter);
             ++leftIter;
         }
-        ++mainIter;
+        ++p; // Move the iterator in the original list
     }
 
-    while (leftIter != leftList.end()) {
-        *mainIter = *leftIter;
-        ++leftIter;
-        ++mainIter;
-    }
-
-    while (rightIter != rightList.end()) {
-        *mainIter = *rightIter;
-        ++rightIter;
-        ++mainIter;
-    }
+    // Copy the remaining elements from the left and right halves
+    lst.insert(p, leftIter, q);
+    lst.insert(p, rightIter, r);
 }
+
 
 void PmergeMe::listSort(std::list<int>& lst) {
     if (lst.size() > K) {
+        std::list<int> secondHalf;
         std::list<int>::iterator p = lst.begin();
         std::advance(p, lst.size() / 2);
-        std::list<int>::iterator q = p;
-        std::list<int>::iterator r = lst.end();
+
+        std::copy(p, lst.end(), std::back_inserter(secondHalf));
+        lst.erase(p, lst.end());
+
         listSort(lst);
-        listSort(lst);
-        listMerge(p, q, r);
-    } else {
+        listSort(secondHalf);
+        listMerge(lst, lst.begin(), secondHalf.begin(), secondHalf.end());
+    }
+	else {
         listInsertionSort(lst);
     }
 }
@@ -164,15 +168,6 @@ bool PmergeMe::isListSorted(const std::list<int>& lst) {
         }
         ++it1;
         ++it2;
-    }
-    return true;
-} */
-
-bool PmergeMe::isDequeSorted(std::deque<int>& deq) {
-	for (size_t i = 0; i < deq.size() - 1; i++) {
-        if (deq[i] > deq[i + 1]) {
-            return false;
-        }
     }
     return true;
 }
