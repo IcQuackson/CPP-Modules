@@ -10,7 +10,7 @@ TARGET := btc
 # Source files and object files
 SRC := src/main.cpp src/BitcoinExchange.cpp
 OBJ := $(SRC:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
-ARGS = inputs/good.txt
+ARGS = inputs/bad.txt
 
 all: $(TARGET)
 
@@ -54,6 +54,10 @@ test: all
 	./$(TARGET) inputs/bad_header.txt
 	@echo "\n"
 	./$(TARGET) inputs/no_records.txt
+	@echo "\n"
+	./$(TARGET) inputs/empty_line.txt
+	@echo "\n"
+	./$(TARGET) inputs/empty.txt
 
 valgrind: all
 	valgrind --leak-check=full --show-leak-kinds=all ./$(TARGET) $(ARGS)

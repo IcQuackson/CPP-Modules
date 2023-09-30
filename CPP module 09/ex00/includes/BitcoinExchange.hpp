@@ -9,6 +9,8 @@
 #include <sstream>
 #include <cstdlib>
 #include <ctime>
+#include <algorithm>
+#include <cmath>
 
 class BitcoinExchange {
 
@@ -23,7 +25,7 @@ private:
     bool isInputValid() const;
     bool isLineValid(std::string line);
     bool isFormatValid(std::string& input);
-    //bool isDateValid(const std::string line) const;
+	bool isNumberValid(std::string& input);
     double getRate(std::string datePart) const;
 
 public:

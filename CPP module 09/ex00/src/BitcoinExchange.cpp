@@ -94,9 +94,42 @@ bool BitcoinExchange::isInputValid() const {
     return true;
 }
 
+bool BitcoinExchange::isNumberValid(std::string& input) {
+	if (input.empty() || input.find_first_not_of("f0123456789.") != std::string::npos) {
+		return false;
+	}
+
+    std::istringstream iss(input);
+    float value;
+
+    // Try to extract a float from the string
+    iss >> value;
+
+	if (iss.fail()) {
+		return false;
+    }
+	// Check for double
+	if (input.find(".") != std::string::npos && iss.eof()
+	 && input.find("f") == std::string::npos) {
+		return false;
+    }
+    if (!iss.eof()) {
+        std::string remaining;
+        iss >> remaining;
+
+        // Check if the remaining string is "f"
+        if (remaining != "f") {
+            return false;
+        }
+    }
+	
+    return std::floor(value) == value && value > 0 && value < 1000.0;
+}
+
 bool BitcoinExchange::isFormatValid(std::string& input) {
     // Define the format "year-MM-DD "
-    const char* dateFormat = "%F ";
+    const char* dateFormat = "%Y-%m-%d ";
+	int spaces = 0;
     
     // Find the position of the | character
     size_t separatorPos = input.find('|');
@@ -107,48 +140,42 @@ bool BitcoinExchange::isFormatValid(std::string& input) {
 
         // Create a tm struct to store the parsed date
         std::tm tm;
+		spaces = std::count(datePart.begin(), datePart.end(), ' ');
 
-        // Try to parse the datePart using the specified format
-        if (strptime(datePart.c_str(), dateFormat, &tm) != NULL) {
+        if (spaces == 1 && strptime(datePart.c_str(), dateFormat, &tm) != NULL) {
+
+			// Check if month and day are valid
+			size_t monthAndDayPos = datePart.find("-") + 1;
+			std::string monthAndDay = datePart.substr(monthAndDayPos);
+
+			if (monthAndDay.length() != 6) {
+				std::cout << "Error: date format is not valid: " << input << std::endl;
+				return false;
+			}
+
             // Check if there is exactly one space after the date
             if (separatorPos + 1 < input.size() && input[separatorPos + 1] == ' ') {
                 // Extract the substring after the | character (number part)
                 std::string numberPart = input.substr(separatorPos + 2);
 
-                // Check if the number is a valid integer or float between 0 and 1000
-                std::istringstream numberStream(numberPart);
-                float number;
-                numberStream >> std::noskipws >> number; // Attempt to read a number
-
-                // Check if the read was successful and the number is a valid float or integer
-                if (!numberStream.fail() && number >= 0.0 && number <= 1000.0 && static_cast<int>(number) == number) {
-                    // Everything is valid
-                    return true;
-                }
+                // Check if the number part is a valid number
+				if (isNumberValid(numberPart)) {
+					return true;
+				}
+				else {
+					std::cout << "Error: number is not valid: " << numberPart << std::endl;
+					return false;
+				}
             }
+			else {
+				std::cout << "Error: line format is not valid!: " << input << std::endl;
+                return false;
+			}
         }
     }
-    std::cout << "Error: Input format is not valid!" << std::endl;
+	std::cout << "Error: date format is not valid: " << input << std::endl;
     return false;
 }
-
-/* bool BitcoinExchange::isDateValid(const std::string line) const {
-    // Define the format "year-MM-DD "
-    const char* format = "%Y-%m-%d ";
-
-    // Create a tm struct to store the parsed date
-    std::tm tm = {};
-
-    // Try to parse the input string using the specified format
-    if (strptime(line.c_str(), format, &tm) != NULL) {
-        // Check if there is exactly one space at the end
-        size_t lastPos = line.find_last_not_of(" ");
-        return (lastPos != std::string::npos)
-            && (line.size() - 1) == ++lastPos
-            && (line[lastPos] == ' ');
-    }
-    return false;
-} */
 
 bool BitcoinExchange::isLineValid(std::string line) {
     std::string::iterator it;
@@ -160,15 +187,9 @@ bool BitcoinExchange::isLineValid(std::string line) {
     }
     // check if line has format "YYYY-MM-DD | value"
     if (!isFormatValid(line)) {
-        std::cout << "Error: Invalid line format => " << line << std::endl;
         return false;
     }
     
-/*     date = line.substr(0, line.find("|"));
-    if (!isDateValid(date)) {
-        std::cout << "Error: Invalid date format => " << date << std::endl;
-        return false;
-    } */
     return true;
 }
 
@@ -202,25 +223,13 @@ double BitcoinExchange::getRate(std::string datePart) const {
 
 
 void BitcoinExchange::printRecords() {
-    std::map<std::string, double>::const_iterator it;
-    std::string datePart;
+    std::string date;
+	float value;
 
     if (!isInputValid()) {
         return;
     }
     
-    this->storeContent(_inputFileName, _inputContentMap, '|');
-
-/*     std::cout << "All elements in the map:" << std::endl;
-    for (std::map<std::string, double>::iterator it = _inputContentMap.begin(); it != _inputContentMap.end(); ++it) {
-        std::cout << "Date: " << it->first << ", Value: " << it->second << std::endl;
-    } */
-
-    if (_inputContentMap.empty()) {
-        std::cout << "Error: No records found!" << std::endl;
-        return;
-    }
-
     std::ifstream inputFile(_inputFileName);
 
     if (!inputFile.is_open()) {
@@ -231,16 +240,20 @@ void BitcoinExchange::printRecords() {
     std::string line;
     std::getline(inputFile, line); // ignore the header line
 
-    for (it = _inputContentMap.begin(); it != _inputContentMap.end(); ++it) {
-        std::getline(inputFile, line);
+	int i = 0;
+    while (getline(inputFile, line)) {
         if (isLineValid(line)) {
-            datePart = it->first; // date is the key
-            double value = it->second;
-
-            std::cout << datePart << " => ";
-            std::cout << value << " = " << value * getRate(datePart) << std::endl;
+			date = line.substr(0, line.find("|"));
+            value = std::strtod(line.substr(line.find("|") + 2).c_str(), NULL);
+            std::cout << date << " => ";
+            std::cout << value << " = " << value * getRate(date) << std::endl;
         }
+		i++;
     }
+	inputFile.close();
+	if (i == 0) {
+		std::cout << "Error: No records found!" << std::endl;
+	}
 }
 
 
