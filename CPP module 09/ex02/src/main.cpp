@@ -24,7 +24,6 @@ int main(int argc, char **argv) {
 
     // Check if the input sequence is valid
     if (!PmergeMe::isSequenceValid(argc - 1, ++argv)) {
-        std::cout << "Error: not valid" << std::endl;
         return 0;
     }
 

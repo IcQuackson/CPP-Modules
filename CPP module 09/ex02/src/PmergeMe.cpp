@@ -29,21 +29,26 @@ bool PmergeMe::isSequenceValid(int len, char **seq) {
         // Get the length of the current string
         int strLen = std::strlen(seq[i]);
 
+        if (std::string(seq[i]).find_first_not_of("0123456789") != std::string::npos) {
+            std::cout << "Error: non numeric or invalid argument: " << seq[i] << std::endl;
+            return false;
+        }
+
         // Check if the string is too long
         if (strLen > 10) {
-            std::cout << "PmergeMe::isSequenceValid: sequence too long: " << seq[i] << std::endl;
+            std::cout << "Error: sequence too long: " << seq[i] << std::endl;
             return false;
         }
 
         // Check if the string is equal to "INT_MAX"
         if (strLen == 10 && std::strcmp(seq[i], "INT_MAX") == 0) {
-            std::cout << "PmergeMe::isSequenceValid: int max: " << seq[i] << std::endl;
+            std::cout << "Error: int max: " << seq[i] << std::endl;
             return false;
         }
 
         // Check if the string can be converted to a positive integer
         if (std::atoi(seq[i]) <= 0) {
-            std::cout << "PmergeMe::isSequenceValid: zero or invalid integer: " << seq[i] << std::endl;
+            std::cout << "Error: zero or invalid integer: " << seq[i] << std::endl;
             return false;
         }
     }

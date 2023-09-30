@@ -47,6 +47,12 @@ test: all
 	@echo "\n"
 	./$(TARGET) 3 5 9 7 4
 	@echo "\n"
+	./$(TARGET)
+	@echo "\n"
+	./$(TARGET) 1 2 3 4 5
+	@echo "\n"
+	./$(TARGET) 1 2 3 4 5a
+	@echo "\n"
 	./$(TARGET) 3 a s a 3 a
 	@echo "\n"
 	./$(TARGET) 2147483647
