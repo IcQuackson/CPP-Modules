@@ -18,20 +18,17 @@ RPN &RPN::operator=(RPN const &other) {
 }
 
 void RPN::calculateRPN(std::string str) {
-    int token;
+    std::string token;
+    std::istringstream iss(str);
 
     if (!isRPNValid(str)) {
         std::cout << "Error" << std::endl;
         return;
     } 
 
-    for (size_t i = 0; i < str.size(); i++) {
-		token = str[i];
-		if (std::isspace(token)) {
-			continue;
-		}
-		if (std::isdigit(token)) {
-			_stack.push(token - '0');
+    while (iss >> token) {
+		if (!isOperator(token)) {
+			_stack.push(std::atoi(token.c_str()));
 		}
         else {
             int b, a;
@@ -43,13 +40,17 @@ void RPN::calculateRPN(std::string str) {
             _stack.pop();
             result = 0;
 
-            if (token == '+') {
+            if (token == "+") {
                 result = a + b;
-            } else if (token == '-') {	
+            } else if (token == "-") {	
                 result = a - b;
-            } else if (token == '*') {
+            } else if (token == "*") {
                 result = a * b;
-            } else if (token == '/') {
+            } else if (token == "/") {
+                if (b == 0) {
+                    std::cout << "Error: Division by Zero" << std::endl;
+                    return;
+                }
                 result = a / b;
             } else {
 				std::cout << "Error" << std::endl;
@@ -66,8 +67,24 @@ void RPN::calculateRPN(std::string str) {
 	}
 }
 
-bool RPN::isOperator(int token) {
-    return (token == '+' || token == '-' || token == '*' || token == '/');
+bool RPN::isOperator(std::string token) {
+    return (token == "+" || token == "-" || token == "*" || token == "/");
+}
+
+bool RPN::isValidNumber(std::string &str) {
+    if (str.length() > 2 || str.empty()) {
+        return false;
+    }
+    if (str.length() == 1 && !std::isdigit(str[0])) {
+        return false;
+    }
+    if (str.length() == 2 && str[0] != '-' && str[0] != '+') {
+        return false;
+    }
+    if (str.length() == 2 && !std::isdigit(str[1])) {
+        return false;
+    }
+    return true;
 }
 
 bool RPN::isRPNValid(std::string str) {
@@ -75,8 +92,7 @@ bool RPN::isRPNValid(std::string str) {
     std::string token;
 
     while (ss >> token) { // Extract token from the stream.
-        if (token.length() > 1 || (!std::isdigit(token[0])
-                                    && !isOperator(token[0]))) {
+        if (!isValidNumber(token) && !isOperator(token)) {
             return false;
         }
     }

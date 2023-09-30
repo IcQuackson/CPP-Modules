@@ -31,17 +31,18 @@ int main(int argc, char **argv) {
     std::vector<int> vector;
     std::deque<int> dequeInt;
 
+    // Sort and measure time for deque
+    clock_t startTimeDeque = clock();
+
+
     for (int i = 0; i < argc - 1; i++) {
         int value = std::atoi(argv[i]);
         dequeInt.push_back(value);
-        vector.push_back(value);
     }
 
     // Print the original sequence
     printSequence("Before: ", vector);
 
-    // Sort and measure time for deque
-    clock_t startTimeDeque = clock();
     PmergeMe::dequeSort(dequeInt, 0, dequeInt.size() - 1);
     clock_t endTimeDeque = clock();
 
@@ -56,10 +57,16 @@ int main(int argc, char **argv) {
     printDeque("After: ", dequeInt);
     std::cout << "Time to process a range of " << argc - 1 << " elements with std::deque: " << elapsedTimeDeque << " microseconds" << std::endl;
 
-
     // Sort and measure time for vector
     clock_t startTimeVector = clock();
+
+    for (int i = 0; i < argc - 1; i++) {
+        int value = std::atoi(argv[i]);
+        vector.push_back(value);
+    }
+
     PmergeMe::vectorSort(vector, 0, vector.size() - 1);
+
     clock_t endTimeVector = clock();
 
     double elapsedTimeVector = static_cast<double>(endTimeVector - startTimeVector) / CLOCKS_PER_SEC * 1000000.0;

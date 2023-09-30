@@ -10,7 +10,7 @@ TARGET := rpn
 # Source files and object files
 SRC := src/main.cpp src/RPN.cpp
 OBJ := $(SRC:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
-ARGS = "s s  s s s s s"
+ARGS = "1 -1 -"
 
 all: $(TARGET)
 
@@ -45,6 +45,15 @@ lldb: all
 test: all
 	@echo "\033[93mEmpty Input\033[0m"
 	./$(TARGET)
+	@echo "\n"
+	@echo "\033[93minput bigger than 9\033[0m"
+	./$(TARGET) "1 2 10"
+	@echo "\n"
+	@echo "\033[93mDivision by zero\033[0m"
+	./$(TARGET) "1 0 /"
+	@echo "\n"
+	@echo "\033[93mNegative number\033[0m"
+	./$(TARGET) "1 -1 +"
 	@echo "\n"
 	@echo  "\033[93mComplex Arithmetic\033[0m"
 	./$(TARGET) "8 9 * 9 - 9 - 9 - 4 - 1 +"

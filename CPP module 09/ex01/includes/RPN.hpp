@@ -18,6 +18,7 @@ public:
     RPN &operator=(RPN const &other);
 
     void calculateRPN(std::string str);
-    bool isOperator(int token);
+    bool isOperator(std::string token);
     bool isRPNValid(std::string str);
+    bool isValidNumber(std::string &str);
 };
