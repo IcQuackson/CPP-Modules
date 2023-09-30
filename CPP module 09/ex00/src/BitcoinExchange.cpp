@@ -3,7 +3,6 @@
 const char *BitcoinExchange::_dbFileName = "data.csv";
 
 BitcoinExchange::BitcoinExchange() {
-    _inputContentMap = std::map<std::string, double>();
     _dbContentMap = std::map<std::string, double>();
 }
 
@@ -21,7 +20,6 @@ BitcoinExchange::BitcoinExchange(const BitcoinExchange &other) {
 
 BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other) {
     if (this != &other) {
-        _inputContentMap = other._inputContentMap;
         _dbContentMap = other._dbContentMap;
     }
     return *this;

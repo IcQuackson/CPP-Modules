@@ -17,9 +17,7 @@ class BitcoinExchange {
 private:
     static const char *_dbFileName;
     const char *_inputFileName;
-    std::map<std::string, double> _inputContentMap;
     std::map<std::string, double> _dbContentMap;
-
     void storeContent(const char *fileName,
                                 std::map<std::string, double> &map, char separator);
     bool isInputValid() const;
