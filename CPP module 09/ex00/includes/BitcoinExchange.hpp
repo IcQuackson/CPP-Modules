@@ -5,23 +5,25 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <map>
 #include <sstream>
 #include <cstdlib>
+#include <ctime>
 
 class BitcoinExchange {
 
 private:
-    static const char *dbFileName;
-    std::vector<std::string> inputContent;
-    std::vector<std::string> dbContent;
+    static const char *_dbFileName;
+    const char *_inputFileName;
+    std::map<std::string, double> _inputContentMap;
+    std::map<std::string, double> _dbContentMap;
 
     void storeContent(const char *fileName,
-                                std::vector<std::string> &vector);
+                                std::map<std::string, double> &map, char separator);
     bool isInputValid() const;
-    bool isLineValid(std::string line) const;
-    bool isFormatValid(const std::string& line) const;
-    bool isDateValid(const std::string& line) const;
-    double getValue(const std::string& line) const;
+    bool isLineValid(std::string line);
+    bool isFormatValid(std::string& input);
+    //bool isDateValid(const std::string line) const;
     double getRate(std::string datePart) const;
 
 public:
@@ -31,5 +33,5 @@ public:
     BitcoinExchange(const BitcoinExchange &other);
     BitcoinExchange &operator=(const BitcoinExchange &other);
     
-    void printRecords() const;
+    void printRecords();
 };
