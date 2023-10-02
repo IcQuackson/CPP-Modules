@@ -34,7 +34,11 @@ void RPN::calculateRPN(std::string str) {
             int b, a;
 			int result;
 			
-			b = _stack.top();
+			if (_stack.size() < 2) {
+                std::cout << "Error" << std::endl;
+                return;
+            }
+            b = _stack.top();
             _stack.pop();
             a = _stack.top();
             _stack.pop();

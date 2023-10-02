@@ -10,7 +10,7 @@ TARGET := rpn
 # Source files and object files
 SRC := src/main.cpp src/RPN.cpp
 OBJ := $(SRC:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
-ARGS = "1 -1 -"
+ARGS = "*"
 
 all: $(TARGET)
 
@@ -57,6 +57,9 @@ test: all
 	@echo "\n"
 	@echo  "\033[93mComplex Arithmetic\033[0m"
 	./$(TARGET) "8 9 * 9 - 9 - 9 - 4 - 1 +"
+	@echo "\n"
+	@echo  "\033[93mSingle operator\033[0m"
+	./$(TARGET) "*"
 	@echo "\n"
 	@echo  "\033[93mSimple Arithmetic\033[0m"
 	./$(TARGET) "7 7 * 7 -"
