@@ -1,6 +1,6 @@
 #include "PmergeMe.hpp"
 
-void printSequence(const char* message, const std::vector<int>& sequence) {
+void printVector(const char* message, const std::vector<int>& sequence) {
     std::cout << message;
     for (size_t i = 0; i < sequence.size(); i++) {
         std::cout << sequence[i] << " ";
@@ -34,16 +34,13 @@ int main(int argc, char **argv) {
     // Sort and measure time for deque
     clock_t startTimeDeque = clock();
 
-
     for (int i = 0; i < argc - 1; i++) {
         int value = std::atoi(argv[i]);
         dequeInt.push_back(value);
     }
 
-    // Print the original sequence
-    printSequence("Before: ", vector);
-
     PmergeMe::dequeSort(dequeInt, 0, dequeInt.size() - 1);
+
     clock_t endTimeDeque = clock();
 
     double elapsedTimeDeque = static_cast<double>(endTimeDeque - startTimeDeque) / CLOCKS_PER_SEC * 1000000.0;
@@ -76,9 +73,8 @@ int main(int argc, char **argv) {
         std::cout << "Error: vector is not sorted" << std::endl;
         return 0;
     }
-    // Print the sorted vector and the time taken
+    // Print time taken
     std::cout << "Time to process a range of " << argc - 1 << " elements with std::vector: " << elapsedTimeVector << " microseconds" << std::endl;
-
 
     return 0;
 }

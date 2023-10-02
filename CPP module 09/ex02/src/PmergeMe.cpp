@@ -24,6 +24,9 @@ PmergeMe::~PmergeMe() {}
  * @return    True if the sequence is valid, false otherwise.
  */
 bool PmergeMe::isSequenceValid(int len, char **seq) {
+    if (len == 0) {
+        return false;
+    }
     // Iterate through each string in the sequence
     for (int i = 0; i < len; i++) {
         // Get the length of the current string
@@ -36,7 +39,7 @@ bool PmergeMe::isSequenceValid(int len, char **seq) {
 
         // Check if the string is too long
         if (strLen > 10) {
-            std::cout << "Error: sequence too long: " << seq[i] << std::endl;
+            std::cout << "Error: sequence too long" << std::endl;
             return false;
         }
 
@@ -53,7 +56,13 @@ bool PmergeMe::isSequenceValid(int len, char **seq) {
         }
     }
 
-    // If all checks pass, the sequence is valid
+    // Print the sequence
+    std::cout << "Before: ";
+    for (int i = 0; i < len; i++) {
+        std::cout << seq[i] << " ";
+    }
+    std::cout << std::endl;
+
     return true;
 }
 

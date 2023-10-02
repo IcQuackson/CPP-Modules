@@ -47,6 +47,8 @@ test: all
 	@echo "\n"
 	./$(TARGET) 3 5 9 7 4
 	@echo "\n"
+	./$(TARGET) ""
+	@echo "\n"
 	./$(TARGET)
 	@echo "\n"
 	./$(TARGET) 1 2 3 4 5
