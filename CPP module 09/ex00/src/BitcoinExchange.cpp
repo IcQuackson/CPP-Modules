@@ -106,11 +106,7 @@ bool BitcoinExchange::isNumberValid(std::string& input) {
 	if (iss.fail()) {
 		return false;
     }
-	// Check for double
-	if (input.find(".") != std::string::npos && iss.eof()
-	 && input.find("f") == std::string::npos) {
-		return false;
-    }
+
     if (!iss.eof()) {
         std::string remaining;
         iss >> remaining;
@@ -121,7 +117,7 @@ bool BitcoinExchange::isNumberValid(std::string& input) {
         }
     }
 	
-    return std::floor(value) == value && value > 0 && value < 1000.0;
+    return value > 0 && value < 1000.0;
 }
 
 bool BitcoinExchange::isFormatValid(std::string& input) {
@@ -219,7 +215,6 @@ double BitcoinExchange::getRate(std::string datePart) const {
     return rate;
 }
 
-
 void BitcoinExchange::printRecords() {
     std::string date;
 	float value;
@@ -253,5 +248,3 @@ void BitcoinExchange::printRecords() {
 		std::cout << "Error: No records found!" << std::endl;
 	}
 }
-
-

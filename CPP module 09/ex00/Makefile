@@ -10,7 +10,7 @@ TARGET := btc
 # Source files and object files
 SRC := src/main.cpp src/BitcoinExchange.cpp
 OBJ := $(SRC:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
-ARGS = inputs/bad.txt
+ARGS = inputs/good.csv
 
 all: $(TARGET)
 
@@ -45,19 +45,19 @@ lldb: all
 test: all
 	./$(TARGET)
 	@echo "\n"
-	./$(TARGET) inputs/good.txt
+	./$(TARGET) inputs/good.csv
 	@echo "\n"
-	./$(TARGET) inputs/bad.txt
+	./$(TARGET) inputs/bad.csv
 	@echo "\n"
-	./$(TARGET) inputs/does_not_exist.txt
+	./$(TARGET) inputs/does_not_exist.csv
 	@echo "\n"
-	./$(TARGET) inputs/bad_header.txt
+	./$(TARGET) inputs/bad_header.csv
 	@echo "\n"
-	./$(TARGET) inputs/no_records.txt
+	./$(TARGET) inputs/no_records.csv
 	@echo "\n"
-	./$(TARGET) inputs/empty_line.txt
+	./$(TARGET) inputs/empty_line.csv
 	@echo "\n"
-	./$(TARGET) inputs/empty.txt
+	./$(TARGET) inputs/empty.csv
 
 valgrind: all
 	valgrind --leak-check=full --show-leak-kinds=all ./$(TARGET) $(ARGS)
